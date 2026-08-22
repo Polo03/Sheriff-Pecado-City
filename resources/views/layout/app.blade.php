@@ -357,6 +357,22 @@
             </a>
 
 
+            <a
+                href="{{ route('rangos.index') }}"
+                class="{{ request()->routeIs('rangos.*') ? 'activo' : '' }}"
+            >
+
+                <span class="sidebar-icono">
+                    📊
+                </span>
+
+                <span class="texto-menu">
+                    Rangos
+                </span>
+
+            </a>
+
+
             {{-- AÑADE AQUÍ MÁS OPCIONES --}}
 
             {{--

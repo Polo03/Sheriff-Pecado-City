@@ -14,9 +14,17 @@ class SujetoProcesadoController extends Controller
     |--------------------------------------------------------------------------
     */
 
-    public function index()
+    public function index(Request $request)
     {
-        $sujetos = SujetoProcesado::orderBy('id', 'desc')->get();
+        $busqueda = trim((string) $request->input('buscar'));
+
+        $sujetos = SujetoProcesado::query()
+            ->when($busqueda !== '', function ($query) use ($busqueda) {
+                $query->where('nombre', 'like', '%' . $busqueda . '%');
+            })
+            ->orderBy('id', 'desc')
+            ->paginate(16)
+            ->withQueryString();
 
         return view('sujetos_procesados', [
             'sujetos' => $sujetos,
@@ -317,11 +325,7 @@ class SujetoProcesadoController extends Controller
         */
 
         return redirect()
-            ->route('sujetos-procesados.index')
-            ->with(
-                'mensaje',
-                'Sujeto procesado creado correctamente.'
-            );
+            ->route('sujetos-procesados.index');
     }
 
 
@@ -552,11 +556,7 @@ class SujetoProcesadoController extends Controller
 
 
         return redirect()
-            ->route('sujetos-procesados.index')
-            ->with(
-                'mensaje',
-                'Sujeto procesado actualizado correctamente.'
-            );
+            ->route('sujetos-procesados.index');
     }
 
 
