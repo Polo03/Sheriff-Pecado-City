@@ -4,53 +4,6 @@
 
 @push('styles')
 <style>
-    .usuario {
-        display: flex;
-        justify-content: flex-end;
-        margin-bottom: 30px;
-        position: relative;
-    }
-
-    .usuario-boton {
-        padding: 10px 15px;
-        border: none;
-        border-radius: 8px;
-        background: white;
-        color: #222;
-        font-size: 15px;
-        font-weight: bold;
-        cursor: pointer;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-    }
-
-    .menu-usuario {
-        display: none;
-        position: absolute;
-        top: 48px;
-        right: 0;
-        min-width: 150px;
-        background: white;
-        border-radius: 8px;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
-        overflow: hidden;
-        z-index: 2;
-    }
-
-    .menu-usuario form {
-        margin: 0;
-    }
-
-    .logout {
-        width: 100%;
-        padding: 10px 15px;
-        border: none;
-        background: white;
-        color: #dc3545;
-        font-size: 14px;
-        text-align: left;
-        cursor: pointer;
-    }
-
     .fichaje-container {
         width: min(400px, 100%);
         margin: 10vh auto 0;
@@ -116,23 +69,34 @@
         font-size: 18px;
         cursor: pointer;
     }
+
+    .pluses-container {
+        width: min(400px, 100%);
+        margin: 24px auto 0;
+        padding: 20px;
+        border-radius: 8px;
+        background: white;
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    .pluses-container label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+    .pluses-container select {
+        width: 100%;
+        padding: 11px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        background: white;
+        font: inherit;
+    }
 </style>
 @endpush
 
 @section('content')
-    <div class="usuario">
-        <button type="button" class="usuario-boton" onclick="toggleMenu()">
-            {{ $nombre }} <span id="flecha">▼</span>
-        </button>
-
-        <div id="menu-usuario" class="menu-usuario">
-            <form action="{{ route('logout') }}" method="POST">
-                @csrf
-                <button type="submit" class="logout">Cerrar sesión</button>
-            </form>
-        </div>
-    </div>
-
     <div class="fichaje-container">
         <h1>Fichaje</h1>
 
@@ -161,19 +125,18 @@
             </form>
         @endif
     </div>
+
+    <div class="pluses-container">
+        <label for="plus">Pluses</label>
+        <select id="plus" name="plus">
+            <option value="">Selecciona un plus</option>
+        </select>
+    </div>
+
 @endsection
 
 @push('scripts')
 <script>
-    function toggleMenu() {
-        const menu = document.getElementById('menu-usuario');
-        const flecha = document.getElementById('flecha');
-        const abierto = menu.style.display === 'block';
-
-        menu.style.display = abierto ? 'none' : 'block';
-        flecha.textContent = abierto ? '▼' : '▲';
-    }
-
     function actualizarReloj() {
         const ahora = new Date();
         const horas = String(ahora.getHours()).padStart(2, '0');

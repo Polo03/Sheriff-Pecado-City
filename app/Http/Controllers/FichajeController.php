@@ -7,6 +7,17 @@ use Illuminate\Support\Facades\DB;
 
 class FichajeController extends Controller
 {
+    public function menuPrincipal(Request $request)
+    {
+        if (!$request->session()->has('usuario_id')) {
+            return redirect()->route('login');
+        }
+
+        return view('inicio', [
+            'nombre' => $request->session()->get('nombre'),
+        ]);
+    }
+
     public function index(Request $request)
 {
     if (!$request->session()->has('usuario_id')) {
@@ -22,11 +33,31 @@ class FichajeController extends Controller
         ->where('salida', 'Sigue fichando')
         ->first();
 
+    $esDirectiva = DB::table('agentes')
+        ->join('rangos', 'rangos.rango', '=', 'agentes.rango')
+        ->where('agentes.id', $agente)
+        ->where('rangos.escala', 'Directiva')
+        ->exists();
+
+    $fichasMenu = DB::table('fichas_agentes')
+        ->join('agentes', 'agentes.id', '=', 'fichas_agentes.agente_id')
+        ->where(function ($query) use ($agente, $esDirectiva) {
+            $query->where('fichas_agentes.agente_id', $agente);
+
+            if ($esDirectiva) {
+                $query->orWhereNotNull('fichas_agentes.id');
+            }
+        })
+        ->select('fichas_agentes.id', 'fichas_agentes.placa', 'agentes.nombre')
+        ->orderBy('agentes.nombre')
+        ->get();
+
     return view('menu_principal', compact(
         'fichajeActivo',
         'agente',
         'usuario',
-        'nombre'
+        'nombre',
+        'fichasMenu'
     ));
 }
 

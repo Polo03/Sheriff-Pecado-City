@@ -12,7 +12,7 @@ class LoginController extends Controller
     {
         // Si ya está logueado, ir directamente al menú principal
         if ($request->session()->has('usuario_id')) {
-            return redirect()->route('fichaje.index');
+            return redirect()->route('menu.principal');
         }
 
         // Comprobar si existe una cookie de "recordarme"
@@ -30,7 +30,7 @@ class LoginController extends Controller
                 $request->session()->put('usuario', $usuario->usuario);
                 $request->session()->put('nombre', $usuario->nombre);
 
-                return redirect()->route('fichaje.index');
+                return redirect()->route('menu.principal');
             }
         }
 
@@ -97,7 +97,7 @@ class LoginController extends Controller
         }
 
 
-        return redirect()->route('fichaje.index');
+        return redirect()->route('menu.principal');
     }
 
 

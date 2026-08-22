@@ -179,6 +179,119 @@
         }
 
 
+        .sidebar-menu details {
+
+            margin-bottom: 6px;
+
+        }
+
+
+        .sidebar-menu summary {
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+            padding: 13px 15px;
+
+            border-radius: 8px;
+
+            color: #ddd;
+
+            cursor: pointer;
+
+            font-size: 14px;
+
+            list-style: none;
+
+            transition: 0.2s ease;
+
+        }
+
+
+        .sidebar-menu summary::-webkit-details-marker {
+
+            display: none;
+
+        }
+
+
+        .sidebar-menu summary::after {
+
+            content: '›';
+
+            margin-left: auto;
+
+            font-size: 20px;
+
+            transition: transform 0.2s ease;
+
+        }
+
+
+        .sidebar-menu summary:hover,
+        .sidebar-menu details[open] summary,
+        .sidebar-menu summary.activo {
+
+            background: #2b2b2b;
+
+            color: white;
+
+        }
+
+
+        .sidebar-menu details[open] summary::after {
+
+            transform: rotate(90deg);
+
+        }
+
+
+        .submenu-lateral {
+
+            padding: 4px 0 0 52px;
+
+        }
+
+
+        .sidebar-menu .submenu-lateral a {
+
+            padding: 9px 12px;
+
+            margin-bottom: 2px;
+
+            font-size: 13px;
+
+        }
+
+
+        .menu-contextual-ficha {
+
+            position: fixed;
+
+            z-index: 2000;
+
+            display: none;
+
+            padding: 8px 12px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 6px;
+
+            background: white;
+
+            color: #dc3545;
+
+            cursor: pointer;
+
+            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+
+        }
+
+
         .sidebar-icono {
 
             width: 25px;
@@ -203,6 +316,95 @@
             min-height: 100vh;
 
             padding: 40px;
+
+        }
+
+
+        .usuario {
+
+            display: flex;
+
+            justify-content: flex-end;
+
+            margin-bottom: 30px;
+
+            position: relative;
+
+        }
+
+
+        .usuario-boton {
+
+            padding: 10px 15px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: white;
+
+            color: #222;
+
+            font-size: 15px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+
+        }
+
+
+        .menu-usuario {
+
+            display: none;
+
+            position: absolute;
+
+            top: 48px;
+
+            right: 0;
+
+            min-width: 150px;
+
+            background: white;
+
+            border-radius: 8px;
+
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+
+            overflow: hidden;
+
+            z-index: 2;
+
+        }
+
+
+        .menu-usuario form {
+
+            margin: 0;
+
+        }
+
+
+        .logout {
+
+            width: 100%;
+
+            padding: 10px 15px;
+
+            border: none;
+
+            background: white;
+
+            color: #dc3545;
+
+            font-size: 14px;
+
+            text-align: left;
+
+            cursor: pointer;
 
         }
 
@@ -257,6 +459,13 @@
                 justify-content: center;
 
                 padding: 13px 5px;
+
+            }
+
+
+            .submenu-lateral {
+
+                display: none;
 
             }
 
@@ -320,12 +529,33 @@
 
         <nav class="sidebar-menu">
 
+            @php
+                $usuarioMenuId = session('usuario_id');
+                $esDirectivaMenu = $usuarioMenuId && \Illuminate\Support\Facades\DB::table('agentes')
+                    ->join('rangos', 'rangos.rango', '=', 'agentes.rango')
+                    ->where('agentes.id', $usuarioMenuId)
+                    ->where('rangos.escala', 'Directiva')
+                    ->exists();
+                $fichasMenu = \Illuminate\Support\Facades\DB::table('fichas_agentes')
+                    ->join('agentes', 'agentes.id', '=', 'fichas_agentes.agente_id')
+                    ->where(function ($query) use ($usuarioMenuId, $esDirectivaMenu) {
+                        $query->where('fichas_agentes.agente_id', $usuarioMenuId);
+
+                        if ($esDirectivaMenu) {
+                            $query->orWhereNotNull('fichas_agentes.id');
+                        }
+                    })
+                    ->select('fichas_agentes.id', 'fichas_agentes.placa', 'agentes.nombre')
+                    ->orderBy('agentes.nombre')
+                    ->get();
+            @endphp
+
 
             {{-- INICIO --}}
 
             <a
-                href="{{ url('/') }}"
-                class="{{ request()->is('/') ? 'activo' : '' }}"
+                href="{{ route('menu.principal') }}"
+                class="{{ request()->routeIs('menu.principal') ? 'activo' : '' }}"
             >
 
                 <span class="sidebar-icono">
@@ -339,38 +569,150 @@
             </a>
 
 
-            {{-- SUJETOS PROCESADOS --}}
+            {{-- INFORMACION --}}
 
             <a
-                href="{{ route('sujetos-procesados.index') }}"
-                class="{{ request()->routeIs('sujetos-procesados.*') ? 'activo' : '' }}"
+                href="{{ route('menu.principal') }}"
             >
 
                 <span class="sidebar-icono">
-                    👤
+                    ℹ️
                 </span>
 
                 <span class="texto-menu">
-                    Sujetos procesados
+                    Información
                 </span>
 
             </a>
 
 
-            <a
-                href="{{ route('rangos.index') }}"
-                class="{{ request()->routeIs('rangos.*') ? 'activo' : '' }}"
-            >
+            {{-- COMUNICACIONES --}}
+
+            <a href="{{ route('menu.principal') }}">
 
                 <span class="sidebar-icono">
-                    📊
+                    📡
                 </span>
 
                 <span class="texto-menu">
-                    Rangos
+                    Comunicaciones
                 </span>
 
             </a>
+
+
+            {{-- COMANDANCIA --}}
+
+            <details {{ request()->routeIs('sujetos-procesados.*') ? 'open' : '' }}>
+
+                <summary class="{{ request()->routeIs('sujetos-procesados.*') ? 'activo' : '' }}">
+
+                    <span class="sidebar-icono">
+                        ⭐
+                    </span>
+
+                    <span class="texto-menu">
+                        Comandancia
+                    </span>
+
+                </summary>
+
+                <div class="submenu-lateral">
+
+                    <a
+                        href="{{ route('sujetos-procesados.index') }}"
+                        class="{{ request()->routeIs('sujetos-procesados.*') ? 'activo' : '' }}"
+                    >Sujetos procesados</a>
+
+                </div>
+
+            </details>
+
+
+            {{-- DIVISIONES --}}
+
+            <details {{ request()->is('divisiones/*') ? 'open' : '' }}>
+
+                <summary>
+
+                    <span class="sidebar-icono">
+                        🏢
+                    </span>
+
+                    <span class="texto-menu">
+                        Divisiones
+                    </span>
+
+                </summary>
+
+                <div class="submenu-lateral">
+
+                    <a href="{{ route('menu.principal') }}">Fiscalia</a>
+                    <a href="{{ route('menu.principal') }}">Investigacion</a>
+                    <a href="{{ route('menu.principal') }}">Marshall</a>
+                    <a href="{{ route('menu.principal') }}">Bani</a>
+                    <a href="{{ route('menu.principal') }}">Aeronautica</a>
+                    <a href="{{ route('menu.principal') }}">Trooper</a>
+                    <a href="{{ route('menu.principal') }}">Entrevistador</a>
+                    <a href="{{ route('menu.principal') }}">Instruccion</a>
+                    <a href="{{ route('menu.principal') }}">Seguridad de gobierno</a>
+                    <a href="{{ route('menu.principal') }}">Directiva de divisiones</a>
+
+                </div>
+
+            </details>
+
+
+            {{-- FICHAJE --}}
+
+            <details {{ request()->routeIs('fichaje.*', 'fichas-agentes.*') ? 'open' : '' }}>
+
+                <summary class="{{ request()->routeIs('fichaje.*', 'fichas-agentes.*') ? 'activo' : '' }}">
+
+                <span class="sidebar-icono">
+                    🕒
+                </span>
+
+                <span class="texto-menu">
+                    Fichaje
+                </span>
+
+                </summary>
+
+                <div class="submenu-lateral">
+                    <a href="{{ route('fichaje.index') }}">Fichaje</a>
+                    @foreach($fichasMenu as $fichaMenu)
+                        <a
+                            href="{{ route('fichas-agentes.show', $fichaMenu->id) }}"
+                            class="{{ request()->routeIs('fichas-agentes.show') && (int) request()->route('ficha') === $fichaMenu->id ? 'activo' : '' }}"
+                        >{{ $fichaMenu->nombre }} - {{ $fichaMenu->placa }}</a>
+                    @endforeach
+                </div>
+
+            </details>
+
+
+            @php
+                $puedeGestionarAgentes = \Illuminate\Support\Facades\DB::table('agentes')
+                    ->join('rangos', 'rangos.rango', '=', 'agentes.rango')
+                    ->where('agentes.id', session('usuario_id'))
+                    ->where('rangos.escala', 'Directiva')
+                    ->exists();
+            @endphp
+
+            @if($puedeGestionarAgentes)
+                <a href="{{ route('gestion-agentes.index') }}">
+
+                    <span class="sidebar-icono">
+                        👥
+                    </span>
+
+                    <span class="texto-menu">
+                        Gestión Agentes
+                    </span>
+
+                </a>
+            @endif
 
 
             {{-- AÑADE AQUÍ MÁS OPCIONES --}}
@@ -426,6 +768,19 @@
 
         <div class="contenido-interno">
 
+            <div class="usuario">
+                <button type="button" class="usuario-boton" onclick="toggleMenu()">
+                    {{ session('nombre', 'Agente') }} <span id="flecha">▼</span>
+                </button>
+
+                <div id="menu-usuario" class="menu-usuario">
+                    <form action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="logout">Cerrar sesión</button>
+                    </form>
+                </div>
+            </div>
+
             @yield('content')
 
         </div>
@@ -437,6 +792,17 @@
 
 
 @stack('scripts')
+
+<script>
+    function toggleMenu() {
+        const menu = document.getElementById('menu-usuario');
+        const flecha = document.getElementById('flecha');
+        const abierto = menu.style.display === 'block';
+
+        menu.style.display = abierto ? 'none' : 'block';
+        flecha.textContent = abierto ? '▼' : '▲';
+    }
+</script>
 
 </body>
 

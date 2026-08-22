@@ -90,12 +90,14 @@
                                     <td>
                                         <div class="acciones">
                                             <a class="boton-accion boton-ver" href="{{ route('sujetos-procesados.show', $sujeto) }}" title="Ver sujeto" aria-label="Ver sujeto">👁️</a>
-                                            <a class="boton-accion boton-editar" href="{{ route('sujetos-procesados.edit', $sujeto) }}" title="Editar sujeto" aria-label="Editar sujeto">✏️</a>
-                                            <form action="{{ route('sujetos-procesados.destroy', $sujeto) }}" method="POST" onsubmit="return confirm('¿Eliminar este sujeto?');">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button class="boton-accion boton-eliminar" type="submit" title="Eliminar sujeto" aria-label="Eliminar sujeto">➖</button>
-                                            </form>
+                                            @if($puedeEditar)
+                                                <a class="boton-accion boton-editar" href="{{ route('sujetos-procesados.edit', $sujeto) }}" title="Editar sujeto" aria-label="Editar sujeto">✏️</a>
+                                                <form action="{{ route('sujetos-procesados.destroy', $sujeto) }}" method="POST" onsubmit="return confirm('¿Eliminar este sujeto?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button class="boton-accion boton-eliminar" type="submit" title="Eliminar sujeto" aria-label="Eliminar sujeto">➖</button>
+                                                </form>
+                                            @endif
                                         </div>
                                     </td>
                                     <td>{{ $sujeto->nombre }}</td>
@@ -171,7 +173,9 @@
                     </div>
                 @endforeach
             </div>
-            <div class="detalle-acciones"><a class="boton-secundario" href="{{ route('sujetos-procesados.edit', $sujeto) }}">Editar</a></div>
+            @if($puedeEditar)
+                <div class="detalle-acciones"><a class="boton-secundario" href="{{ route('sujetos-procesados.edit', $sujeto) }}">Editar</a></div>
+            @endif
         </div>
     @endif
 @endsection

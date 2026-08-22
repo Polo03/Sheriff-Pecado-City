@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\SujetoProcesado;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 
 class SujetoProcesadoController extends Controller
@@ -29,6 +30,7 @@ class SujetoProcesadoController extends Controller
         return view('sujetos_procesados', [
             'sujetos' => $sujetos,
             'modo' => 'lista',
+            'puedeEditar' => $this->usuarioEsDirectiva(),
         ]);
     }
 
@@ -349,6 +351,8 @@ class SujetoProcesadoController extends Controller
             'modo' => 'ver',
 
             'sujeto' => $sujeto,
+
+            'puedeEditar' => $this->usuarioEsDirectiva(),
         ]);
     }
 
@@ -361,6 +365,8 @@ class SujetoProcesadoController extends Controller
 
     public function edit($id)
     {
+        abort_unless($this->usuarioEsDirectiva(), 403);
+
         $sujeto = SujetoProcesado::findOrFail($id);
 
         return view('sujetos_procesados', [
@@ -387,6 +393,8 @@ class SujetoProcesadoController extends Controller
         Request $request,
         $id
     ) {
+        abort_unless($this->usuarioEsDirectiva(), 403);
+
         $sujeto = SujetoProcesado::findOrFail($id);
 
 
@@ -568,6 +576,8 @@ class SujetoProcesadoController extends Controller
 
     public function destroy($id)
     {
+        abort_unless($this->usuarioEsDirectiva(), 403);
+
         $sujeto =
             SujetoProcesado::findOrFail($id);
 
@@ -622,5 +632,15 @@ class SujetoProcesadoController extends Controller
 
         $sujeto->delete();
 
+    }
+
+
+    private function usuarioEsDirectiva(): bool
+    {
+        return DB::table('agentes')
+            ->join('rangos', 'rangos.rango', '=', 'agentes.rango')
+            ->where('agentes.id', session('usuario_id'))
+            ->where('rangos.escala', 'Directiva')
+            ->exists();
     }
 }
