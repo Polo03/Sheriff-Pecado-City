@@ -5,6 +5,8 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\FichajeController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\FichaAgenteController;
+use App\Http\Controllers\AnuncioController;
+use App\Http\Controllers\ComunicacionController;
 use App\Http\Controllers\SujetoProcesadoController;
 use App\Http\Controllers\RangoController;
 
@@ -42,6 +44,42 @@ Route::post('/fichar', [FichajeController::class, 'fichar'])
 
 Route::get('/fichaje/chat', [ChatController::class, 'index'])
     ->name('fichaje.chat');
+
+Route::get('/anuncios', [AnuncioController::class, 'index'])
+    ->name('anuncios.index');
+
+Route::post('/anuncios', [AnuncioController::class, 'store'])
+    ->name('anuncios.store');
+
+Route::get('/briefing', [AnuncioController::class, 'index'])
+    ->defaults('tipo', 'briefing')
+    ->name('briefing.index');
+
+Route::post('/briefing', [AnuncioController::class, 'store'])
+    ->defaults('tipo', 'briefing')
+    ->name('briefing.store');
+
+Route::get('/mensajes-divisiones', [AnuncioController::class, 'index'])
+    ->defaults('tipo', 'mensajes-divisiones')
+    ->name('mensajes-divisiones.index');
+
+Route::post('/mensajes-divisiones', [AnuncioController::class, 'store'])
+    ->defaults('tipo', 'mensajes-divisiones')
+    ->name('mensajes-divisiones.store');
+
+Route::get('/busqueda-captura-activas', [AnuncioController::class, 'index'])
+    ->defaults('tipo', 'busqueda-captura')
+    ->name('busqueda-captura.index');
+
+Route::post('/busqueda-captura-activas', [AnuncioController::class, 'store'])
+    ->defaults('tipo', 'busqueda-captura')
+    ->name('busqueda-captura.store');
+
+Route::get('/comunicaciones/{canal}', [ComunicacionController::class, 'show'])
+    ->name('comunicaciones.show');
+
+Route::post('/comunicaciones/{canal}', [ComunicacionController::class, 'store'])
+    ->name('comunicaciones.store');
 
 Route::post('/fichaje/chat/{ficha}', [ChatController::class, 'store'])
     ->name('fichaje.chat.store');

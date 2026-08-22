@@ -25,7 +25,9 @@
     .tabla-agentes th:first-child { border-top-left-radius: 6px; }
     .tabla-agentes th:last-child { border-top-right-radius: 6px; }
     .acciones-agente { display: flex; flex-wrap: wrap; gap: 8px; }
-    .accion-enlace { display: inline-block; padding: 8px 10px; border-radius: 5px; background: #198754; color: white; text-decoration: none; font-size: 13px; }
+    .accion-enlace { display: inline-block; padding: 8px 10px; border-radius: 5px; color: white; text-decoration: none; font-size: 13px; }
+    .accion-ver { background: #198754; }
+    .accion-editar { background: #f08c00; }
     .accion-baja { padding: 8px 10px; border: 0; border-radius: 5px; background: #dc3545; color: white; cursor: pointer; font: inherit; font-size: 13px; }
     .alerta-gestion { margin-bottom: 18px; padding: 12px 16px; border-radius: 6px; background: #d4edda; color: #155724; }
     @media (max-width: 700px) { .gestion-cabecera { align-items: flex-start; flex-direction: column; } .gestion-alta { width: 100%; } .gestion-alta summary { display: block; text-align: center; } .tabla-contenedor { overflow-x: auto; } .tabla-agentes { min-width: 680px; } }
@@ -93,13 +95,13 @@
                         <td>
                             <div class="acciones-agente">
                                 @if($fichaAgente)
-                                    <a class="accion-enlace" href="{{ route('fichas-agentes.show', $fichaAgente->id) }}">Ver ficha</a>
+                                    <a class="accion-enlace accion-ver" href="{{ route('fichas-agentes.show', $fichaAgente->id) }}" title="Ver ficha" aria-label="Ver ficha">👁️</a>
                                 @endif
-                                <a class="accion-enlace" href="{{ route('gestion-agentes.edit', $agente->id) }}">Editar Agente</a>
+                                <a class="accion-enlace accion-editar" href="{{ route('gestion-agentes.edit', $agente->id) }}" title="Editar agente" aria-label="Editar agente">✏️</a>
                                 <form action="{{ route('gestion-agentes.baja', $agente->id) }}" method="POST" onsubmit="return confirm('¿Dar de baja este agente y eliminar su ficha?');">
                                     @csrf
                                     @method('DELETE')
-                                    <button class="accion-baja" type="submit">Dar de baja</button>
+                                    <button class="accion-baja" type="submit" title="Dar de baja" aria-label="Dar de baja">➖</button>
                                 </form>
                             </div>
                         </td>

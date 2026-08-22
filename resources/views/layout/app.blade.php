@@ -588,7 +588,9 @@
 
             {{-- COMUNICACIONES --}}
 
-            <a href="{{ route('menu.principal') }}">
+            <details>
+
+                <summary>
 
                 <span class="sidebar-icono">
                     📡
@@ -598,7 +600,18 @@
                     Comunicaciones
                 </span>
 
-            </a>
+                </summary>
+
+                <div class="submenu-lateral">
+                    <a href="{{ route('anuncios.index') }}" class="{{ request()->routeIs('anuncios.*') ? 'activo' : '' }}">Anuncios</a>
+                    <a href="{{ route('briefing.index') }}" class="{{ request()->routeIs('briefing.*') ? 'activo' : '' }}">Briefing</a>
+                    <a href="{{ route('comunicaciones.show', 'general-ic') }}" class="{{ request()->route('canal') === 'general-ic' ? 'activo' : '' }}">General-IC</a>
+                    <a href="{{ route('comunicaciones.show', 'general-ooc') }}" class="{{ request()->route('canal') === 'general-ooc' ? 'activo' : '' }}">General-OOC</a>
+                    <a href="{{ route('mensajes-divisiones.index') }}" class="{{ request()->routeIs('mensajes-divisiones.*') ? 'activo' : '' }}">Mensajes-divisiones</a>
+                    <a href="{{ route('busqueda-captura.index') }}" class="{{ request()->routeIs('busqueda-captura.*') ? 'activo' : '' }}">Busqueda y captura activas</a>
+                </div>
+
+            </details>
 
 
             {{-- COMANDANCIA --}}
