@@ -7,6 +7,9 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\FichaAgenteController;
 use App\Http\Controllers\AnuncioController;
 use App\Http\Controllers\ComunicacionController;
+use App\Http\Controllers\ArmamentoController;
+use App\Http\Controllers\MosqueteLocalController;
+use App\Http\Controllers\MatriculaSospechosaController;
 use App\Http\Controllers\SujetoProcesadoController;
 use App\Http\Controllers\RangoController;
 
@@ -75,11 +78,51 @@ Route::post('/busqueda-captura-activas', [AnuncioController::class, 'store'])
     ->defaults('tipo', 'busqueda-captura')
     ->name('busqueda-captura.store');
 
+Route::get('/mosquetes-locales', [MosqueteLocalController::class, 'index'])
+    ->name('mosquetes-locales.index');
+
+Route::post('/mosquetes-locales', [MosqueteLocalController::class, 'store'])
+    ->name('mosquetes-locales.store');
+
+Route::get('/mosquetes-locales/{mosquete}/editar', [MosqueteLocalController::class, 'edit'])
+    ->name('mosquetes-locales.edit');
+
+Route::put('/mosquetes-locales/{mosquete}', [MosqueteLocalController::class, 'update'])
+    ->name('mosquetes-locales.update');
+
+Route::delete('/mosquetes-locales/{mosquete}', [MosqueteLocalController::class, 'destroy'])
+    ->name('mosquetes-locales.destroy');
+
+Route::get('/matriculas-sospechosas', [MatriculaSospechosaController::class, 'index'])
+    ->name('matriculas-sospechosas.index');
+
+Route::post('/matriculas-sospechosas', [MatriculaSospechosaController::class, 'store'])
+    ->name('matriculas-sospechosas.store');
+
+Route::get('/matriculas-sospechosas/{matricula}/editar', [MatriculaSospechosaController::class, 'edit'])
+    ->name('matriculas-sospechosas.edit');
+
+Route::put('/matriculas-sospechosas/{matricula}', [MatriculaSospechosaController::class, 'update'])
+    ->name('matriculas-sospechosas.update');
+
+Route::delete('/matriculas-sospechosas/{matricula}', [MatriculaSospechosaController::class, 'destroy'])
+    ->name('matriculas-sospechosas.destroy');
+
 Route::get('/comunicaciones/{canal}', [ComunicacionController::class, 'show'])
     ->name('comunicaciones.show');
 
 Route::post('/comunicaciones/{canal}', [ComunicacionController::class, 'store'])
     ->name('comunicaciones.store');
+
+Route::get('/armamento', [ArmamentoController::class, 'index'])
+    ->name('armamento.index');
+
+Route::get('/registrar-armamento', [ArmamentoController::class, 'index'])
+    ->defaults('puedeRegistrar', true)
+    ->name('registrar-armamento.index');
+
+Route::post('/registrar-armamento', [ArmamentoController::class, 'store'])
+    ->name('registrar-armamento.store');
 
 Route::post('/fichaje/chat/{ficha}', [ChatController::class, 'store'])
     ->name('fichaje.chat.store');

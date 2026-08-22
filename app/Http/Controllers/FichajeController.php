@@ -9,12 +9,8 @@ class FichajeController extends Controller
 {
     public function menuPrincipal(Request $request)
     {
-        if (!$request->session()->has('usuario_id')) {
-            return redirect()->route('login');
-        }
-
         return view('inicio', [
-            'nombre' => $request->session()->get('nombre'),
+            'nombre' => $request->session()->get('nombre', 'visitante'),
         ]);
     }
 

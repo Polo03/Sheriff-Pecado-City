@@ -569,6 +569,8 @@
             </a>
 
 
+            @if(session()->has('usuario_id'))
+
             {{-- INFORMACION --}}
 
             <a
@@ -616,9 +618,9 @@
 
             {{-- COMANDANCIA --}}
 
-            <details {{ request()->routeIs('sujetos-procesados.*') ? 'open' : '' }}>
+            <details {{ request()->routeIs('sujetos-procesados.*', 'armamento.*', 'registrar-armamento.*') ? 'open' : '' }}>
 
-                <summary class="{{ request()->routeIs('sujetos-procesados.*') ? 'activo' : '' }}">
+                <summary class="{{ request()->routeIs('sujetos-procesados.*', 'armamento.*', 'registrar-armamento.*') ? 'activo' : '' }}">
 
                     <span class="sidebar-icono">
                         ⭐
@@ -632,10 +634,17 @@
 
                 <div class="submenu-lateral">
 
+                    <a href="{{ route('registrar-armamento.index') }}" class="{{ request()->routeIs('registrar-armamento.*') ? 'activo' : '' }}">Registrar armamento</a>
+                    <a href="{{ route('menu.principal') }}">Plantilla mensajes</a>
                     <a
                         href="{{ route('sujetos-procesados.index') }}"
                         class="{{ request()->routeIs('sujetos-procesados.*') ? 'activo' : '' }}"
                     >Sujetos procesados</a>
+                    <a href="{{ route('menu.principal') }}">Armeria</a>
+                    <a href="{{ route('mosquetes-locales.index') }}" class="{{ request()->routeIs('mosquetes-locales.*') ? 'activo' : '' }}">Mosquetes locales</a>
+                    <a href="{{ route('matriculas-sospechosas.index') }}" class="{{ request()->routeIs('matriculas-sospechosas.*') ? 'activo' : '' }}">Matriculas sospechosas</a>
+                    <a href="{{ route('menu.principal') }}">Drogas DNI</a>
+                    <a href="{{ route('menu.principal') }}">DNI Rehenes</a>
 
                 </div>
 
@@ -714,17 +723,29 @@
             @endphp
 
             @if($puedeGestionarAgentes)
-                <a href="{{ route('gestion-agentes.index') }}">
+                <details {{ request()->routeIs('gestion-agentes.*') ? 'open' : '' }}>
+
+                    <summary class="{{ request()->routeIs('gestion-agentes.*') ? 'activo' : '' }}">
 
                     <span class="sidebar-icono">
                         👥
                     </span>
 
                     <span class="texto-menu">
-                        Gestión Agentes
+                        Gestión Sheriff
                     </span>
 
-                </a>
+                    </summary>
+
+                    <div class="submenu-lateral">
+                        <a href="{{ route('gestion-agentes.index') }}" class="{{ request()->routeIs('gestion-agentes.*') ? 'activo' : '' }}">Agentes</a>
+                        <a href="{{ route('armamento.index') }}" class="{{ request()->routeIs('armamento.*') ? 'activo' : '' }}">Armamento</a>
+                        <a href="{{ route('menu.principal') }}">Armería</a>
+                    </div>
+
+                </details>
+            @endif
+
             @endif
 
 
