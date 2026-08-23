@@ -12,6 +12,7 @@ use App\Http\Controllers\MosqueteLocalController;
 use App\Http\Controllers\MatriculaSospechosaController;
 use App\Http\Controllers\SujetoProcesadoController;
 use App\Http\Controllers\RangoController;
+use App\Http\Controllers\DrogasDniController;
 
 
 /*
@@ -220,3 +221,30 @@ Route::delete(
     [AnuncioController::class, 'destroy']
 )
     ->name('plantilla-mensajes.destroy');
+
+/*
+|--------------------------------------------------------------------------
+| Drogas DNI
+|--------------------------------------------------------------------------
+*/
+
+Route::get('/drogas-dni', [DrogasDniController::class, 'index'])
+    ->name('drogas-dni.index');
+
+Route::get('/drogas-dni/crear', [DrogasDniController::class, 'create'])
+    ->name('drogas-dni.create');
+
+Route::post('/drogas-dni', [DrogasDniController::class, 'store'])
+    ->name('drogas-dni.store');
+
+Route::get('/drogas-dni/{droga}', [DrogasDniController::class, 'show'])
+    ->name('drogas-dni.show');
+
+Route::get('/drogas-dni/{droga}/editar', [DrogasDniController::class, 'edit'])
+    ->name('drogas-dni.edit');
+
+Route::put('/drogas-dni/{droga}', [DrogasDniController::class, 'update'])
+    ->name('drogas-dni.update');
+
+Route::delete('/drogas-dni/{droga}', [DrogasDniController::class, 'destroy'])
+    ->name('drogas-dni.destroy');

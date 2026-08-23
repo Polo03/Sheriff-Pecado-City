@@ -789,11 +789,11 @@
                         </a>
 
                         <a
-    href="{{ route('plantilla-mensajes.index') }}"
-    class="{{ request()->routeIs('plantilla-mensajes.*') ? 'activo' : '' }}"
->
-    Plantilla mensajes
-</a>
+                            href="{{ route('plantilla-mensajes.index') }}"
+                            class="{{ request()->routeIs('plantilla-mensajes.*') ? 'activo' : '' }}"
+                        >
+                            Plantilla mensajes
+                        </a>
 
                         <a
                             href="{{ route('sujetos-procesados.index') }}"
@@ -820,8 +820,8 @@
                             Matriculas sospechosas
                         </a>
 
-                        <a href="{{ route('menu.principal') }}">
-                            Drogas DNI
+                        <a href="{{ route('drogas-dni.index') }}">
+                            💊 Drogas DNI
                         </a>
 
                         <a href="{{ route('menu.principal') }}">
