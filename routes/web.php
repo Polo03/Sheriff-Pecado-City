@@ -54,6 +54,11 @@ Route::get('/anuncios', [AnuncioController::class, 'index'])
 Route::post('/anuncios', [AnuncioController::class, 'store'])
     ->name('anuncios.store');
 
+Route::delete(
+    '/anuncios/{anuncio}',
+    [AnuncioController::class, 'destroy']
+)->name('anuncios.destroy');
+
 Route::get('/briefing', [AnuncioController::class, 'index'])
     ->defaults('tipo', 'briefing')
     ->name('briefing.index');
@@ -61,6 +66,9 @@ Route::get('/briefing', [AnuncioController::class, 'index'])
 Route::post('/briefing', [AnuncioController::class, 'store'])
     ->defaults('tipo', 'briefing')
     ->name('briefing.store');
+
+Route::delete('/briefing/{anuncio}', [AnuncioController::class, 'destroy'])
+    ->name('briefing.destroy');
 
 Route::get('/mensajes-divisiones', [AnuncioController::class, 'index'])
     ->defaults('tipo', 'mensajes-divisiones')
@@ -185,3 +193,30 @@ Route::post('/rangos/delete', [RangoController::class, 'delete'])
 Route::fallback(function () {
     return redirect()->route('menu.principal');
 });
+
+/*
+|--------------------------------------------------------------------------
+| Plantilla mensajes
+|--------------------------------------------------------------------------
+*/
+
+Route::get(
+    '/plantilla-mensajes',
+    [AnuncioController::class, 'index']
+)
+    ->defaults('tipo', 'plantilla-mensajes')
+    ->name('plantilla-mensajes.index');
+
+
+Route::post(
+    '/plantilla-mensajes',
+    [AnuncioController::class, 'store']
+)
+    ->defaults('tipo', 'plantilla-mensajes')
+    ->name('plantilla-mensajes.store');
+
+Route::delete(
+    '/plantilla-mensajes/{anuncio}',
+    [AnuncioController::class, 'destroy']
+)
+    ->name('plantilla-mensajes.destroy');

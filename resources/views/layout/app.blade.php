@@ -788,9 +788,12 @@
                             Registrar armamento
                         </a>
 
-                        <a href="{{ route('menu.principal') }}">
-                            Plantilla mensajes
-                        </a>
+                        <a
+    href="{{ route('plantilla-mensajes.index') }}"
+    class="{{ request()->routeIs('plantilla-mensajes.*') ? 'activo' : '' }}"
+>
+    Plantilla mensajes
+</a>
 
                         <a
                             href="{{ route('sujetos-procesados.index') }}"
