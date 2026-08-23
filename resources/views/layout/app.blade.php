@@ -699,45 +699,43 @@
                             href="{{ route('anuncios.index') }}"
                             class="{{ request()->routeIs('anuncios.*') ? 'activo' : '' }}"
                         >
-                            Anuncios
+                            📢 Anuncios
                         </a>
 
                         <a
                             href="{{ route('briefing.index') }}"
                             class="{{ request()->routeIs('briefing.*') ? 'activo' : '' }}"
                         >
-                            Briefing
+                            📋 Briefing
                         </a>
 
                         <a
                             href="{{ route('comunicaciones.show', 'general-ic') }}"
                             class="{{ request()->route('canal') === 'general-ic' ? 'activo' : '' }}"
                         >
-                            General-IC
+                            📡 General-IC
                         </a>
 
                         <a
                             href="{{ route('comunicaciones.show', 'general-ooc') }}"
                             class="{{ request()->route('canal') === 'general-ooc' ? 'activo' : '' }}"
                         >
-                            General-OOC
+                            💬 General-OOC
                         </a>
 
                         <a
                             href="{{ route('mensajes-divisiones.index') }}"
                             class="{{ request()->routeIs('mensajes-divisiones.*') ? 'activo' : '' }}"
                         >
-                            Mensajes-divisiones
+                            🏢 Mensajes-divisiones
                         </a>
 
                         <a
                             href="{{ route('busqueda-captura.index') }}"
                             class="{{ request()->routeIs('busqueda-captura.*') ? 'activo' : '' }}"
                         >
-                            Busqueda y captura activas
+                            🔎 Busqueda y captura activas
                         </a>
-
-                    </div>
 
                 </details>
 
@@ -785,47 +783,54 @@
                             href="{{ route('registrar-armamento.index') }}"
                             class="{{ request()->routeIs('registrar-armamento.*') ? 'activo' : '' }}"
                         >
-                            Registrar armamento
+                            🔫 Registrar armamento
                         </a>
+
 
                         <a
                             href="{{ route('plantilla-mensajes.index') }}"
                             class="{{ request()->routeIs('plantilla-mensajes.*') ? 'activo' : '' }}"
                         >
-                            Plantilla mensajes
+                            📌 Plantilla mensajes
                         </a>
+
 
                         <a
                             href="{{ route('sujetos-procesados.index') }}"
                             class="{{ request()->routeIs('sujetos-procesados.*') ? 'activo' : '' }}"
                         >
-                            Sujetos procesados
+                            👤 Sujetos procesados
                         </a>
 
-                        <a href="{{ route('menu.principal') }}">
-                            Armeria
+
+                        <a
+                            href="{{ route('menu.principal') }}"
+                        >
+                            ⚔️ Armeria
                         </a>
+
 
                         <a
                             href="{{ route('mosquetes-locales.index') }}"
                             class="{{ request()->routeIs('mosquetes-locales.*') ? 'activo' : '' }}"
                         >
-                            Mosquetes locales
+                            🔫 Mosquetes locales
                         </a>
+
 
                         <a
                             href="{{ route('matriculas-sospechosas.index') }}"
                             class="{{ request()->routeIs('matriculas-sospechosas.*') ? 'activo' : '' }}"
                         >
-                            Matriculas sospechosas
+                            🚗 Matriculas sospechosas
                         </a>
 
                         <a href="{{ route('drogas-dni.index') }}">
                             💊 Drogas DNI
                         </a>
 
-                        <a href="{{ route('menu.principal') }}">
-                            DNI Rehenes
+                        <a href="{{ route('dni-rehenes.index') }}">
+                            🪪 DNI Rehenes
                         </a>
 
                     </div>
@@ -853,45 +858,68 @@
 
                     <div class="submenu-lateral">
 
-                        <a href="{{ route('menu.principal') }}">
-                            Fiscalia
+                        <a
+                            href="{{ route('menu.principal') }}"
+                        >
+                            ⚖️ Fiscalia
                         </a>
 
-                        <a href="{{ route('menu.principal') }}">
-                            Investigacion
+
+                        <a
+                            href="{{ route('menu.principal') }}"
+                        >
+                            🔎 Investigacion
                         </a>
 
-                        <a href="{{ route('menu.principal') }}">
-                            Marshall
+
+                        <a
+                            href="{{ route('menu.principal') }}"
+                        >
+                            ⭐ Marshall
                         </a>
 
-                        <a href="{{ route('menu.principal') }}">
-                            Bani
+
+                        <a
+                            href="{{ route('menu.principal') }}"
+                        >
+                            🚓 Bani
                         </a>
 
-                        <a href="{{ route('menu.principal') }}">
-                            Aeronautica
+
+                        <a
+                            href="{{ route('menu.principal') }}"
+                        >
+                            ✈️ Aeronautica
                         </a>
 
-                        <a href="{{ route('menu.principal') }}">
-                            Trooper
+
+                        <a
+                            href="{{ route('menu.principal') }}"
+                        >
+                            🚔 Trooper
                         </a>
 
-                        <a href="{{ route('menu.principal') }}">
-                            Entrevistador
+
+                        <a
+                            href="{{ route('menu.principal') }}"
+                        >
+                            🎙️ Entrevistador
                         </a>
 
-                        <a href="{{ route('menu.principal') }}">
-                            Instruccion
+
+                        <a
+                            href="{{ route('menu.principal') }}"
+                        >
+                            📚 Instruccion
                         </a>
 
-                        <a href="{{ route('menu.principal') }}">
-                            Seguridad de gobierno
+
+                        <a
+                            href="{{ route('menu.principal') }}"
+                        >
+                            🛡️ Seguridad de gobierno
                         </a>
 
-                        <a href="{{ route('menu.principal') }}">
-                            Directiva de divisiones
-                        </a>
 
                     </div>
 

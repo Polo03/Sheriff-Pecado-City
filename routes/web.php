@@ -13,6 +13,7 @@ use App\Http\Controllers\MatriculaSospechosaController;
 use App\Http\Controllers\SujetoProcesadoController;
 use App\Http\Controllers\RangoController;
 use App\Http\Controllers\DrogasDniController;
+use App\Http\Controllers\DniRehenController;
 
 
 /*
@@ -248,3 +249,5 @@ Route::put('/drogas-dni/{droga}', [DrogasDniController::class, 'update'])
 
 Route::delete('/drogas-dni/{droga}', [DrogasDniController::class, 'destroy'])
     ->name('drogas-dni.destroy');
+
+Route::resource('dni-rehenes', DniRehenController::class);
