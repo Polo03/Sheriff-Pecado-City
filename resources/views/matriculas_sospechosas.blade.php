@@ -29,13 +29,59 @@
     .tabla-matriculas { width: 100%; min-width: 720px; border-collapse: collapse; }
     .tabla-matriculas th, .tabla-matriculas td { padding: 14px 12px; border-bottom: 1px solid #e5e5e5; text-align: left; vertical-align: middle; }
     .tabla-matriculas th { background: #222; color: white; }
-    .foto-matricula { width: 100px; height: 70px; object-fit: cover; border-radius: 5px; }
-    .acciones-matricula { display: flex; gap: 6px; }
-    .accion-icono { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 34px; border: 0; border-radius: 5px; color: white; font-size: 17px; }
-    .accion-ver { background: #198754; text-decoration: none; }
-    .accion-editar { background: #f08c00; }
-    .accion-eliminar { background: #dc3545; }
-    .alerta-matricula { margin-bottom: 18px; padding: 12px 16px; border-radius: 6px; background: #f8d7da; color: #721c24; }
+    .acciones-matricula {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.acciones-matricula form {
+    margin: 0;
+}
+
+.accion-icono {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 36px;
+    height: 34px;
+
+    border: 0;
+    border-radius: 5px;
+
+    color: white;
+
+    font-size: 17px;
+
+    text-decoration: none;
+
+    cursor: pointer;
+}
+
+.accion-ver {
+    background: #198754;
+}
+
+.accion-ver:hover {
+    background: #157347;
+}
+
+.accion-editar {
+    background: #f08c00;
+}
+
+.accion-editar:hover {
+    background: #d97700;
+}
+
+.accion-eliminar {
+    background: #dc3545;
+}
+
+.accion-eliminar:hover {
+    background: #bb2d3b;
+}
     @media (max-width: 700px) { .matriculas-cabecera { align-items: flex-start; flex-direction: column; } .buscador-matriculas { width: 100%; margin-left: 0; } .boton-anadir { width: 100%; } }
 </style>
 @endpush
@@ -81,24 +127,156 @@
         @endif
 
         <div class="tabla-matriculas-contenedor">
-            <table class="tabla-matriculas">
-                <thead><tr><th>Agente</th><th>Placa</th><th>Foto matrícula</th><th>Causa</th><th>Fecha de registro</th><th>Acciones</th></tr></thead>
-                <tbody>
-                    @forelse($matriculas as $matricula)
-                        <tr>
-                            <td>{{ $matricula->agente_nombre ?: 'Agente no encontrado' }}</td>
-                            <td>{{ $matricula->placa ?: 'Sin placa' }}</td>
-                            <td><img class="foto-matricula" src="{{ asset('storage/' . $matricula->foto_matricula) }}" alt="Foto de matrícula"></td>
-                            <td>{{ $matricula->causa }}</td>
-                            <td>{{ $matricula->fecha_registro }}</td>
-                            <td><div class="acciones-matricula"><a class="accion-icono accion-ver" href="{{ asset('storage/' . $matricula->foto_matricula) }}" target="_blank" title="Ver registro" aria-label="Ver registro">👁️</a>@if($esDirectiva)<a class="accion-icono accion-editar" href="{{ route('matriculas-sospechosas.edit', $matricula->id) }}" title="Editar" aria-label="Editar">✏️</a><form action="{{ route('matriculas-sospechosas.destroy', $matricula->id) }}" method="POST" onsubmit="return confirm('¿Eliminar este registro?');">@csrf @method('DELETE')<button class="accion-icono accion-eliminar" type="submit" title="Eliminar" aria-label="Eliminar">➖</button></form>@endif</div></td>
-                        </tr>
-                    @empty
-                        <tr><td colspan="6">No hay matrículas sospechosas registradas.</td></tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+
+    <table class="tabla-matriculas">
+
+        <thead>
+
+            <tr>
+
+                <th>
+                    Agente
+                </th>
+
+                <th>
+                    Placa
+                </th>
+
+                <th>
+                    Causa
+                </th>
+
+                <th>
+                    Fecha de registro
+                </th>
+
+                <th>
+                    Acciones
+                </th>
+
+            </tr>
+
+        </thead>
+
+
+        <tbody>
+
+            @forelse($matriculas as $matricula)
+
+                <tr>
+
+                    {{-- AGENTE --}}
+
+                    <td>
+                        {{ $matricula->agente_nombre ?: 'Agente no encontrado' }}
+                    </td>
+
+
+                    {{-- PLACA --}}
+
+                    <td>
+                        {{ $matricula->placa ?: 'Sin placa' }}
+                    </td>
+
+
+                    {{-- CAUSA --}}
+
+                    <td>
+                        {{ $matricula->causa }}
+                    </td>
+
+
+                    {{-- FECHA --}}
+
+                    <td>
+                        {{ $matricula->fecha_registro }}
+                    </td>
+
+
+                    {{-- ACCIONES --}}
+
+                    <td>
+
+                        <div class="acciones-matricula">
+
+
+                            {{-- VER --}}
+
+                            <a
+                                href="{{ route('matriculas-sospechosas.show', $matricula->id) }}"
+                                class="accion-icono accion-ver"
+                                title="Ver matrícula"
+                                aria-label="Ver matrícula"
+                            >
+                                👁️
+                            </a>
+
+
+                            @if($esDirectiva)
+
+                                {{-- EDITAR --}}
+
+                                <a
+                                    href="{{ route('matriculas-sospechosas.edit', $matricula->id) }}"
+                                    class="accion-icono accion-editar"
+                                    title="Editar matrícula"
+                                    aria-label="Editar matrícula"
+                                >
+                                    ✏️
+                                </a>
+
+
+                                {{-- ELIMINAR --}}
+
+                                <form
+                                    action="{{ route('matriculas-sospechosas.destroy', $matricula->id) }}"
+                                    method="POST"
+                                    onsubmit="return confirm('¿Eliminar este registro?');"
+                                >
+
+                                    @csrf
+
+                                    @method('DELETE')
+
+                                    <button
+                                        type="submit"
+                                        class="accion-icono accion-eliminar"
+                                        title="Eliminar matrícula"
+                                        aria-label="Eliminar matrícula"
+                                    >
+                                        ➖
+                                    </button>
+
+                                </form>
+
+                            @endif
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+
+            @empty
+
+                <tr>
+
+                    <td colspan="5">
+
+                        No hay matrículas sospechosas registradas.
+
+                    </td>
+
+                </tr>
+
+            @endforelse
+
+        </tbody>
+
+    </table>
+
+</div>
     </section>
 @endsection
 

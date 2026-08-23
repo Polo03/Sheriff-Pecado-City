@@ -84,6 +84,12 @@ Route::get('/mosquetes-locales', [MosqueteLocalController::class, 'index'])
 Route::post('/mosquetes-locales', [MosqueteLocalController::class, 'store'])
     ->name('mosquetes-locales.store');
 
+Route::get('/mosquetes-locales/{mosquete}', [MosqueteLocalController::class, 'show'])
+    ->name('mosquetes-locales.show');
+
+Route::get('/mosquetes-locales/{mosquete}/editar', [MosqueteLocalController::class, 'edit'])
+    ->name('mosquetes-locales.edit');
+
 Route::get('/mosquetes-locales/{mosquete}/editar', [MosqueteLocalController::class, 'edit'])
     ->name('mosquetes-locales.edit');
 
@@ -107,6 +113,11 @@ Route::put('/matriculas-sospechosas/{matricula}', [MatriculaSospechosaController
 
 Route::delete('/matriculas-sospechosas/{matricula}', [MatriculaSospechosaController::class, 'destroy'])
     ->name('matriculas-sospechosas.destroy');
+
+Route::get(
+    '/matriculas-sospechosas/{matricula}',
+    [MatriculaSospechosaController::class, 'show']
+    )->name('matriculas-sospechosas.show');
 
 Route::get('/comunicaciones/{canal}', [ComunicacionController::class, 'show'])
     ->name('comunicaciones.show');

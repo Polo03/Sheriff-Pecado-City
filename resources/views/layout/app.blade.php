@@ -24,9 +24,11 @@
 
         html,
         body {
+
             margin: 0;
             padding: 0;
             min-height: 100%;
+
         }
 
 
@@ -287,7 +289,8 @@
 
             cursor: pointer;
 
-            box-shadow: 0 3px 12px rgba(0, 0, 0, 0.2);
+            box-shadow:
+                0 3px 12px rgba(0, 0, 0, 0.2);
 
         }
 
@@ -351,7 +354,8 @@
 
             cursor: pointer;
 
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+            box-shadow:
+                0 3px 10px rgba(0, 0, 0, 0.15);
 
         }
 
@@ -366,13 +370,14 @@
 
             right: 0;
 
-            min-width: 150px;
+            min-width: 160px;
 
             background: white;
 
             border-radius: 8px;
 
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
+            box-shadow:
+                0 3px 10px rgba(0, 0, 0, 0.15);
 
             overflow: hidden;
 
@@ -405,6 +410,43 @@
             text-align: left;
 
             cursor: pointer;
+
+        }
+
+
+        .logout:hover {
+
+            background: #f8f8f8;
+
+        }
+
+
+        .login-link {
+
+            display: block;
+
+            width: 100%;
+
+            padding: 10px 15px;
+
+            background: white;
+
+            color: #198754;
+
+            font-size: 14px;
+
+            text-align: left;
+
+            text-decoration: none;
+
+            cursor: pointer;
+
+        }
+
+
+        .login-link:hover {
+
+            background: #f8f8f8;
 
         }
 
@@ -530,24 +572,70 @@
         <nav class="sidebar-menu">
 
             @php
-                $usuarioMenuId = session('usuario_id');
-                $esDirectivaMenu = $usuarioMenuId && \Illuminate\Support\Facades\DB::table('agentes')
-                    ->join('rangos', 'rangos.rango', '=', 'agentes.rango')
-                    ->where('agentes.id', $usuarioMenuId)
-                    ->where('rangos.escala', 'Directiva')
-                    ->exists();
-                $fichasMenu = \Illuminate\Support\Facades\DB::table('fichas_agentes')
-                    ->join('agentes', 'agentes.id', '=', 'fichas_agentes.agente_id')
-                    ->where(function ($query) use ($usuarioMenuId, $esDirectivaMenu) {
-                        $query->where('fichas_agentes.agente_id', $usuarioMenuId);
 
-                        if ($esDirectivaMenu) {
-                            $query->orWhereNotNull('fichas_agentes.id');
+                $usuarioMenuId = session('usuario_id');
+
+                $esDirectivaMenu = $usuarioMenuId &&
+                    \Illuminate\Support\Facades\DB::table('agentes')
+                        ->join(
+                            'rangos',
+                            'rangos.rango',
+                            '=',
+                            'agentes.rango'
+                        )
+                        ->where(
+                            'agentes.id',
+                            $usuarioMenuId
+                        )
+                        ->where(
+                            'rangos.escala',
+                            'Directiva'
+                        )
+                        ->exists();
+
+
+                $fichasMenu =
+                    \Illuminate\Support\Facades\DB::table(
+                        'fichas_agentes'
+                    )
+                    ->join(
+                        'agentes',
+                        'agentes.id',
+                        '=',
+                        'fichas_agentes.agente_id'
+                    )
+                    ->where(
+                        function ($query) use (
+                            $usuarioMenuId,
+                            $esDirectivaMenu
+                        ) {
+
+                            $query->where(
+                                'fichas_agentes.agente_id',
+                                $usuarioMenuId
+                            );
+
+
+                            if ($esDirectivaMenu) {
+
+                                $query->orWhereNotNull(
+                                    'fichas_agentes.id'
+                                );
+
+                            }
+
                         }
-                    })
-                    ->select('fichas_agentes.id', 'fichas_agentes.placa', 'agentes.nombre')
-                    ->orderBy('agentes.nombre')
+                    )
+                    ->select(
+                        'fichas_agentes.id',
+                        'fichas_agentes.placa',
+                        'agentes.nombre'
+                    )
+                    ->orderBy(
+                        'agentes.nombre'
+                    )
                     ->get();
+
             @endphp
 
 
@@ -571,227 +659,381 @@
 
             @if(session()->has('usuario_id'))
 
-            {{-- INFORMACION --}}
 
-            <a
-                href="{{ route('menu.principal') }}"
-            >
+                {{-- INFORMACION --}}
 
-                <span class="sidebar-icono">
-                    ℹ️
-                </span>
-
-                <span class="texto-menu">
-                    Información
-                </span>
-
-            </a>
-
-
-            {{-- COMUNICACIONES --}}
-
-            <details>
-
-                <summary>
-
-                <span class="sidebar-icono">
-                    📡
-                </span>
-
-                <span class="texto-menu">
-                    Comunicaciones
-                </span>
-
-                </summary>
-
-                <div class="submenu-lateral">
-                    <a href="{{ route('anuncios.index') }}" class="{{ request()->routeIs('anuncios.*') ? 'activo' : '' }}">Anuncios</a>
-                    <a href="{{ route('briefing.index') }}" class="{{ request()->routeIs('briefing.*') ? 'activo' : '' }}">Briefing</a>
-                    <a href="{{ route('comunicaciones.show', 'general-ic') }}" class="{{ request()->route('canal') === 'general-ic' ? 'activo' : '' }}">General-IC</a>
-                    <a href="{{ route('comunicaciones.show', 'general-ooc') }}" class="{{ request()->route('canal') === 'general-ooc' ? 'activo' : '' }}">General-OOC</a>
-                    <a href="{{ route('mensajes-divisiones.index') }}" class="{{ request()->routeIs('mensajes-divisiones.*') ? 'activo' : '' }}">Mensajes-divisiones</a>
-                    <a href="{{ route('busqueda-captura.index') }}" class="{{ request()->routeIs('busqueda-captura.*') ? 'activo' : '' }}">Busqueda y captura activas</a>
-                </div>
-
-            </details>
-
-
-            {{-- COMANDANCIA --}}
-
-            <details {{ request()->routeIs('sujetos-procesados.*', 'armamento.*', 'registrar-armamento.*') ? 'open' : '' }}>
-
-                <summary class="{{ request()->routeIs('sujetos-procesados.*', 'armamento.*', 'registrar-armamento.*') ? 'activo' : '' }}">
+                <a
+                    href="{{ route('menu.principal') }}"
+                >
 
                     <span class="sidebar-icono">
-                        ⭐
+                        ℹ️
                     </span>
 
                     <span class="texto-menu">
-                        Comandancia
+                        Información
                     </span>
 
-                </summary>
-
-                <div class="submenu-lateral">
-
-                    <a href="{{ route('registrar-armamento.index') }}" class="{{ request()->routeIs('registrar-armamento.*') ? 'activo' : '' }}">Registrar armamento</a>
-                    <a href="{{ route('menu.principal') }}">Plantilla mensajes</a>
-                    <a
-                        href="{{ route('sujetos-procesados.index') }}"
-                        class="{{ request()->routeIs('sujetos-procesados.*') ? 'activo' : '' }}"
-                    >Sujetos procesados</a>
-                    <a href="{{ route('menu.principal') }}">Armeria</a>
-                    <a href="{{ route('mosquetes-locales.index') }}" class="{{ request()->routeIs('mosquetes-locales.*') ? 'activo' : '' }}">Mosquetes locales</a>
-                    <a href="{{ route('matriculas-sospechosas.index') }}" class="{{ request()->routeIs('matriculas-sospechosas.*') ? 'activo' : '' }}">Matriculas sospechosas</a>
-                    <a href="{{ route('menu.principal') }}">Drogas DNI</a>
-                    <a href="{{ route('menu.principal') }}">DNI Rehenes</a>
-
-                </div>
-
-            </details>
+                </a>
 
 
-            {{-- DIVISIONES --}}
+                {{-- COMUNICACIONES --}}
 
-            <details {{ request()->is('divisiones/*') ? 'open' : '' }}>
+                <details>
 
-                <summary>
+                    <summary>
 
-                    <span class="sidebar-icono">
-                        🏢
-                    </span>
+                        <span class="sidebar-icono">
+                            📡
+                        </span>
 
-                    <span class="texto-menu">
-                        Divisiones
-                    </span>
-
-                </summary>
-
-                <div class="submenu-lateral">
-
-                    <a href="{{ route('menu.principal') }}">Fiscalia</a>
-                    <a href="{{ route('menu.principal') }}">Investigacion</a>
-                    <a href="{{ route('menu.principal') }}">Marshall</a>
-                    <a href="{{ route('menu.principal') }}">Bani</a>
-                    <a href="{{ route('menu.principal') }}">Aeronautica</a>
-                    <a href="{{ route('menu.principal') }}">Trooper</a>
-                    <a href="{{ route('menu.principal') }}">Entrevistador</a>
-                    <a href="{{ route('menu.principal') }}">Instruccion</a>
-                    <a href="{{ route('menu.principal') }}">Seguridad de gobierno</a>
-                    <a href="{{ route('menu.principal') }}">Directiva de divisiones</a>
-
-                </div>
-
-            </details>
-
-
-            {{-- FICHAJE --}}
-
-            <details {{ request()->routeIs('fichaje.*', 'fichas-agentes.*') ? 'open' : '' }}>
-
-                <summary class="{{ request()->routeIs('fichaje.*', 'fichas-agentes.*') ? 'activo' : '' }}">
-
-                <span class="sidebar-icono">
-                    🕒
-                </span>
-
-                <span class="texto-menu">
-                    Fichaje
-                </span>
-
-                </summary>
-
-                <div class="submenu-lateral">
-                    <a href="{{ route('fichaje.index') }}">Fichaje</a>
-                    @foreach($fichasMenu as $fichaMenu)
-                        <a
-                            href="{{ route('fichas-agentes.show', $fichaMenu->id) }}"
-                            class="{{ request()->routeIs('fichas-agentes.show') && (int) request()->route('ficha') === $fichaMenu->id ? 'activo' : '' }}"
-                        >{{ $fichaMenu->nombre }} - {{ $fichaMenu->placa }}</a>
-                    @endforeach
-                </div>
-
-            </details>
-
-
-            @php
-                $puedeGestionarAgentes = \Illuminate\Support\Facades\DB::table('agentes')
-                    ->join('rangos', 'rangos.rango', '=', 'agentes.rango')
-                    ->where('agentes.id', session('usuario_id'))
-                    ->where('rangos.escala', 'Directiva')
-                    ->exists();
-            @endphp
-
-            @if($puedeGestionarAgentes)
-                <details {{ request()->routeIs('gestion-agentes.*') ? 'open' : '' }}>
-
-                    <summary class="{{ request()->routeIs('gestion-agentes.*') ? 'activo' : '' }}">
-
-                    <span class="sidebar-icono">
-                        👥
-                    </span>
-
-                    <span class="texto-menu">
-                        Gestión Sheriff
-                    </span>
+                        <span class="texto-menu">
+                            Comunicaciones
+                        </span>
 
                     </summary>
 
                     <div class="submenu-lateral">
-                        <a href="{{ route('gestion-agentes.index') }}" class="{{ request()->routeIs('gestion-agentes.*') ? 'activo' : '' }}">Agentes</a>
-                        <a href="{{ route('armamento.index') }}" class="{{ request()->routeIs('armamento.*') ? 'activo' : '' }}">Armamento</a>
-                        <a href="{{ route('menu.principal') }}">Armería</a>
+
+                        <a
+                            href="{{ route('anuncios.index') }}"
+                            class="{{ request()->routeIs('anuncios.*') ? 'activo' : '' }}"
+                        >
+                            Anuncios
+                        </a>
+
+                        <a
+                            href="{{ route('briefing.index') }}"
+                            class="{{ request()->routeIs('briefing.*') ? 'activo' : '' }}"
+                        >
+                            Briefing
+                        </a>
+
+                        <a
+                            href="{{ route('comunicaciones.show', 'general-ic') }}"
+                            class="{{ request()->route('canal') === 'general-ic' ? 'activo' : '' }}"
+                        >
+                            General-IC
+                        </a>
+
+                        <a
+                            href="{{ route('comunicaciones.show', 'general-ooc') }}"
+                            class="{{ request()->route('canal') === 'general-ooc' ? 'activo' : '' }}"
+                        >
+                            General-OOC
+                        </a>
+
+                        <a
+                            href="{{ route('mensajes-divisiones.index') }}"
+                            class="{{ request()->routeIs('mensajes-divisiones.*') ? 'activo' : '' }}"
+                        >
+                            Mensajes-divisiones
+                        </a>
+
+                        <a
+                            href="{{ route('busqueda-captura.index') }}"
+                            class="{{ request()->routeIs('busqueda-captura.*') ? 'activo' : '' }}"
+                        >
+                            Busqueda y captura activas
+                        </a>
+
                     </div>
 
                 </details>
-            @endif
+
+
+                {{-- COMANDANCIA --}}
+
+                <details
+                    {{
+                        request()->routeIs(
+                            'sujetos-procesados.*',
+                            'armamento.*',
+                            'registrar-armamento.*'
+                        )
+                            ? 'open'
+                            : ''
+                    }}
+                >
+
+                    <summary
+                        class="{{
+                            request()->routeIs(
+                                'sujetos-procesados.*',
+                                'armamento.*',
+                                'registrar-armamento.*'
+                            )
+                                ? 'activo'
+                                : ''
+                        }}"
+                    >
+
+                        <span class="sidebar-icono">
+                            ⭐
+                        </span>
+
+                        <span class="texto-menu">
+                            Comandancia
+                        </span>
+
+                    </summary>
+
+
+                    <div class="submenu-lateral">
+
+                        <a
+                            href="{{ route('registrar-armamento.index') }}"
+                            class="{{ request()->routeIs('registrar-armamento.*') ? 'activo' : '' }}"
+                        >
+                            Registrar armamento
+                        </a>
+
+                        <a href="{{ route('menu.principal') }}">
+                            Plantilla mensajes
+                        </a>
+
+                        <a
+                            href="{{ route('sujetos-procesados.index') }}"
+                            class="{{ request()->routeIs('sujetos-procesados.*') ? 'activo' : '' }}"
+                        >
+                            Sujetos procesados
+                        </a>
+
+                        <a href="{{ route('menu.principal') }}">
+                            Armeria
+                        </a>
+
+                        <a
+                            href="{{ route('mosquetes-locales.index') }}"
+                            class="{{ request()->routeIs('mosquetes-locales.*') ? 'activo' : '' }}"
+                        >
+                            Mosquetes locales
+                        </a>
+
+                        <a
+                            href="{{ route('matriculas-sospechosas.index') }}"
+                            class="{{ request()->routeIs('matriculas-sospechosas.*') ? 'activo' : '' }}"
+                        >
+                            Matriculas sospechosas
+                        </a>
+
+                        <a href="{{ route('menu.principal') }}">
+                            Drogas DNI
+                        </a>
+
+                        <a href="{{ route('menu.principal') }}">
+                            DNI Rehenes
+                        </a>
+
+                    </div>
+
+                </details>
+
+
+                {{-- DIVISIONES --}}
+
+                <details
+                    {{ request()->is('divisiones/*') ? 'open' : '' }}
+                >
+
+                    <summary>
+
+                        <span class="sidebar-icono">
+                            🏢
+                        </span>
+
+                        <span class="texto-menu">
+                            Divisiones
+                        </span>
+
+                    </summary>
+
+                    <div class="submenu-lateral">
+
+                        <a href="{{ route('menu.principal') }}">
+                            Fiscalia
+                        </a>
+
+                        <a href="{{ route('menu.principal') }}">
+                            Investigacion
+                        </a>
+
+                        <a href="{{ route('menu.principal') }}">
+                            Marshall
+                        </a>
+
+                        <a href="{{ route('menu.principal') }}">
+                            Bani
+                        </a>
+
+                        <a href="{{ route('menu.principal') }}">
+                            Aeronautica
+                        </a>
+
+                        <a href="{{ route('menu.principal') }}">
+                            Trooper
+                        </a>
+
+                        <a href="{{ route('menu.principal') }}">
+                            Entrevistador
+                        </a>
+
+                        <a href="{{ route('menu.principal') }}">
+                            Instruccion
+                        </a>
+
+                        <a href="{{ route('menu.principal') }}">
+                            Seguridad de gobierno
+                        </a>
+
+                        <a href="{{ route('menu.principal') }}">
+                            Directiva de divisiones
+                        </a>
+
+                    </div>
+
+                </details>
+
+
+                {{-- FICHAJE --}}
+
+                <details
+                    {{
+                        request()->routeIs(
+                            'fichaje.*',
+                            'fichas-agentes.*'
+                        )
+                            ? 'open'
+                            : ''
+                    }}
+                >
+
+                    <summary>
+
+                        <span class="sidebar-icono">
+                            🕒
+                        </span>
+
+                        <span class="texto-menu">
+                            Fichaje
+                        </span>
+
+                    </summary>
+
+                    <div class="submenu-lateral">
+
+                        <a href="{{ route('fichaje.index') }}">
+                            Fichaje
+                        </a>
+
+
+                        @foreach($fichasMenu as $fichaMenu)
+
+                            <a
+                                href="{{ route('fichas-agentes.show', $fichaMenu->id) }}"
+                                class="{{
+                                    request()->routeIs('fichas-agentes.show')
+                                    &&
+                                    (int) request()->route('ficha') === $fichaMenu->id
+                                        ? 'activo'
+                                        : ''
+                                }}"
+                            >
+                                {{ $fichaMenu->nombre }}
+                                -
+                                {{ $fichaMenu->placa }}
+                            </a>
+
+                        @endforeach
+
+                    </div>
+
+                </details>
+
+
+                @php
+
+                    $puedeGestionarAgentes =
+                        \Illuminate\Support\Facades\DB::table('agentes')
+                            ->join(
+                                'rangos',
+                                'rangos.rango',
+                                '=',
+                                'agentes.rango'
+                            )
+                            ->where(
+                                'agentes.id',
+                                session('usuario_id')
+                            )
+                            ->where(
+                                'rangos.escala',
+                                'Directiva'
+                            )
+                            ->exists();
+
+                @endphp
+
+
+                @if($puedeGestionarAgentes)
+
+                    <details
+                        {{
+                            request()->routeIs('gestion-agentes.*')
+                                ? 'open'
+                                : ''
+                        }}
+                    >
+
+                        <summary
+                            class="{{
+                                request()->routeIs('gestion-agentes.*')
+                                    ? 'activo'
+                                    : ''
+                            }}"
+                        >
+
+                            <span class="sidebar-icono">
+                                👥
+                            </span>
+
+                            <span class="texto-menu">
+                                Gestión Sheriff
+                            </span>
+
+                        </summary>
+
+
+                        <div class="submenu-lateral">
+
+                            <a
+                                href="{{ route('gestion-agentes.index') }}"
+                                class="{{ request()->routeIs('gestion-agentes.*') ? 'activo' : '' }}"
+                            >
+                                Agentes
+                            </a>
+
+                            <a
+                                href="{{ route('armamento.index') }}"
+                                class="{{ request()->routeIs('armamento.*') ? 'activo' : '' }}"
+                            >
+                                Armamento
+                            </a>
+
+                            <a href="{{ route('menu.principal') }}">
+                                Armería
+                            </a>
+
+                        </div>
+
+                    </details>
+
+                @endif
 
             @endif
-
-
-            {{-- AÑADE AQUÍ MÁS OPCIONES --}}
-
-            {{--
-
-            <a href="#">
-                <span class="sidebar-icono">
-                    🚓
-                </span>
-
-                <span class="texto-menu">
-                    Patrullas
-                </span>
-            </a>
-
-
-            <a href="#">
-                <span class="sidebar-icono">
-                    📋
-                </span>
-
-                <span class="texto-menu">
-                    Informes
-                </span>
-            </a>
-
-
-            <a href="#">
-                <span class="sidebar-icono">
-                    👮
-                </span>
-
-                <span class="texto-menu">
-                    Agentes
-                </span>
-            </a>
-
-            --}}
 
         </nav>
 
-
     </aside>
-
 
 
     {{-- =====================================================
@@ -802,20 +1044,102 @@
 
         <div class="contenido-interno">
 
-            <div class="usuario">
-                <button type="button" class="usuario-boton" onclick="toggleMenu()">
-                    {{ session('nombre', 'Agente') }} <span id="flecha">▼</span>
-                </button>
 
-                <div id="menu-usuario" class="menu-usuario">
-                    <form action="{{ route('logout') }}" method="POST">
-                        @csrf
-                        <button type="submit" class="logout">Cerrar sesión</button>
-                    </form>
-                </div>
+            {{-- =================================================
+                 USUARIO / VISITANTE
+            ================================================== --}}
+
+            <div class="usuario">
+
+
+                @if(session()->has('usuario_id'))
+
+                    {{-- ================================
+                         USUARIO LOGUEADO
+                    ================================= --}}
+
+                    <button
+                        type="button"
+                        class="usuario-boton"
+                        onclick="toggleMenu()"
+                    >
+
+                        {{ session('nombre', 'Agente') }}
+
+                        <span id="flecha">
+                            ▼
+                        </span>
+
+                    </button>
+
+
+                    <div
+                        id="menu-usuario"
+                        class="menu-usuario"
+                    >
+
+                        <form
+                            action="{{ route('logout') }}"
+                            method="POST"
+                        >
+
+                            @csrf
+
+                            <button
+                                type="submit"
+                                class="logout"
+                            >
+                                Cerrar sesión
+                            </button>
+
+                        </form>
+
+                    </div>
+
+
+                @else
+
+                    {{-- ================================
+                         VISITANTE
+                    ================================= --}}
+
+                    <button
+                        type="button"
+                        class="usuario-boton"
+                        onclick="toggleMenu()"
+                    >
+
+                        Visitante
+
+                        <span id="flecha">
+                            ▼
+                        </span>
+
+                    </button>
+
+
+                    <div
+                        id="menu-usuario"
+                        class="menu-usuario"
+                    >
+
+                        <a
+                            href="{{ route('login') }}"
+                            class="login-link"
+                        >
+                            Iniciar sesión
+                        </a>
+
+                    </div>
+
+                @endif
+
+
             </div>
 
+
             @yield('content')
+
 
         </div>
 
@@ -827,16 +1151,40 @@
 
 @stack('scripts')
 
-<script>
-    function toggleMenu() {
-        const menu = document.getElementById('menu-usuario');
-        const flecha = document.getElementById('flecha');
-        const abierto = menu.style.display === 'block';
 
-        menu.style.display = abierto ? 'none' : 'block';
-        flecha.textContent = abierto ? '▼' : '▲';
+<script>
+
+    function toggleMenu() {
+
+        const menu =
+            document.getElementById(
+                'menu-usuario'
+            );
+
+        const flecha =
+            document.getElementById(
+                'flecha'
+            );
+
+        const abierto =
+            menu.style.display === 'block';
+
+
+        menu.style.display =
+            abierto
+                ? 'none'
+                : 'block';
+
+
+        flecha.textContent =
+            abierto
+                ? '▼'
+                : '▲';
+
     }
+
 </script>
+
 
 </body>
 

@@ -92,26 +92,163 @@
         @endif
 
         <div class="tabla-mosquetes-contenedor">
-            <table class="tabla-mosquetes">
-                <thead><tr><th>Agente</th><th>Placa</th><th>Empresa/compañía</th><th>Número de serie</th><th>Foto DNI</th><th>Licencia</th><th>Fecha de registro</th><th>Acciones</th></tr></thead>
-                <tbody>
-                    @forelse($mosquetes as $mosquete)
-                        <tr>
-                            <td>{{ $mosquete->agente_nombre ?: 'Agente no encontrado' }}</td>
-                            <td>{{ $mosquete->placa ?: 'Sin placa' }}</td>
-                            <td>{{ $mosquete->empresa }}</td>
-                            <td>{{ $mosquete->num_serie_mosquete }}</td>
-                            <td><img class="foto-mosquete" src="{{ asset('storage/' . $mosquete->foto_dni) }}" alt="Foto del DNI"></td>
-                            <td><img class="foto-mosquete" src="{{ asset('storage/' . $mosquete->foto_licencia_armas) }}" alt="Foto de licencia"></td>
-                            <td>{{ $mosquete->fecha_registro }}</td>
-                            <td><div class="acciones-mosquete"><a class="accion-icono accion-ver" href="{{ asset('storage/' . $mosquete->foto_dni) }}" target="_blank" title="Ver registro" aria-label="Ver registro">👁️</a>@if($esDirectiva)<a class="accion-icono accion-editar" href="{{ route('mosquetes-locales.edit', $mosquete->id) }}" title="Editar" aria-label="Editar">✏️</a><form action="{{ route('mosquetes-locales.destroy', $mosquete->id) }}" method="POST" onsubmit="return confirm('¿Eliminar este registro?');">@csrf @method('DELETE')<button class="accion-icono accion-eliminar" type="submit" title="Eliminar" aria-label="Eliminar">➖</button></form>@endif</div></td>
-                        </tr>
-                    @empty
-                        <tr><td colspan="8">No hay mosquetes locales registrados.</td></tr>
-                    @endforelse
-                </tbody>
-            </table>
-        </div>
+
+    <table class="tabla-mosquetes">
+
+        <thead>
+
+            <tr>
+
+                <th>
+                    Agente
+                </th>
+
+                <th>
+                    Placa
+                </th>
+
+                <th>
+                    Empresa/compañía
+                </th>
+
+                <th>
+                    Número de serie
+                </th>
+
+                <th>
+                    Fecha de registro
+                </th>
+
+                <th>
+                    Acciones
+                </th>
+
+            </tr>
+
+        </thead>
+
+
+        <tbody>
+
+            @forelse($mosquetes as $mosquete)
+
+                <tr>
+
+                    {{-- AGENTE --}}
+
+                    <td>
+                        {{ $mosquete->agente_nombre ?: 'Agente no encontrado' }}
+                    </td>
+
+
+                    {{-- PLACA --}}
+
+                    <td>
+                        {{ $mosquete->placa ?: 'Sin placa' }}
+                    </td>
+
+
+                    {{-- EMPRESA --}}
+
+                    <td>
+                        {{ $mosquete->empresa }}
+                    </td>
+
+
+                    {{-- NÚMERO DE SERIE --}}
+
+                    <td>
+                        {{ $mosquete->num_serie_mosquete }}
+                    </td>
+
+
+                    {{-- FECHA DE REGISTRO --}}
+
+                    <td>
+                        {{ $mosquete->fecha_registro }}
+                    </td>
+
+
+                    {{-- ACCIONES --}}
+
+                    <td>
+
+                        <div class="acciones-mosquete">
+
+                            {{-- VER --}}
+
+                            <a
+                                class="accion-icono accion-ver"
+                                href="{{ route('mosquetes-locales.show', $mosquete->id) }}"
+                                title="Ver registro"
+                                aria-label="Ver registro"
+                            >
+                                👁️
+                            </a>
+
+
+                            @if($esDirectiva)
+
+                                {{-- EDITAR --}}
+
+                                <a
+                                    class="accion-icono accion-editar"
+                                    href="{{ route('mosquetes-locales.edit', $mosquete->id) }}"
+                                    title="Editar"
+                                    aria-label="Editar"
+                                >
+                                    ✏️
+                                </a>
+
+
+                                {{-- ELIMINAR --}}
+
+                                <form
+                                    action="{{ route('mosquetes-locales.destroy', $mosquete->id) }}"
+                                    method="POST"
+                                    onsubmit="return confirm('¿Eliminar este registro?');"
+                                >
+
+                                    @csrf
+
+                                    @method('DELETE')
+
+                                    <button
+                                        class="accion-icono accion-eliminar"
+                                        type="submit"
+                                        title="Eliminar"
+                                        aria-label="Eliminar"
+                                    >
+                                        ➖
+                                    </button>
+
+                                </form>
+
+                            @endif
+
+                        </div>
+
+                    </td>
+
+                </tr>
+
+            @empty
+
+                <tr>
+
+                    <td colspan="6">
+                        No hay mosquetes locales registrados.
+                    </td>
+
+                </tr>
+
+            @endforelse
+
+        </tbody>
+
+    </table>
+
+</div>
     </section>
 @endsection
 

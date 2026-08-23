@@ -71,6 +71,34 @@ class MosqueteLocalController extends Controller
         return redirect()->route('mosquetes-locales.index');
     }
 
+    public function show(Request $request, int $mosquete)
+    {
+        $usuarioId = $this->usuarioId($request);
+
+        $esDirectiva = $this->esDirectiva($usuarioId);
+
+        $registro = DB::table('mosquetes_locales')
+            ->leftJoin(
+                'agentes',
+                'agentes.id',
+                '=',
+                'mosquetes_locales.agente'
+            )
+            ->where('mosquetes_locales.id', $mosquete)
+            ->select(
+                'mosquetes_locales.*',
+                'agentes.nombre as agente_nombre'
+            )
+            ->first();
+
+        abort_unless($registro, 404);
+
+        return view('ver_mosquete', [
+            'mosquete' => $registro,
+            'esDirectiva' => $esDirectiva,
+        ]);
+    }
+
     public function edit(Request $request, int $mosquete)
     {
         $usuarioId = $this->usuarioId($request);
