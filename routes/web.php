@@ -14,6 +14,7 @@ use App\Http\Controllers\SujetoProcesadoController;
 use App\Http\Controllers\RangoController;
 use App\Http\Controllers\DrogasDniController;
 use App\Http\Controllers\DniRehenController;
+use App\Http\Controllers\PlantillaController;
 
 
 /*
@@ -254,3 +255,9 @@ Route::resource('dni-rehenes', DniRehenController::class);
 
 Route::view('/certificado-antecedentes', 'certificado_antecedentes')
     ->name('certificado-antecedentes.index');
+
+Route::view('/plantilla', 'plantilla')
+    ->name('plantilla.index');
+    
+Route::get('/plantilla', [PlantillaController::class, 'index'])
+    ->name('plantilla.index');

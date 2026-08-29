@@ -678,7 +678,10 @@
 
                     <div class="submenu-lateral">
 
-                        <a href="#">
+                        <a
+                            href="{{ route('plantilla.index') }}"
+                            class="{{ request()->routeIs('plantilla.*') ? 'activo' : '' }}"
+                        >
                             📄 Plantilla
                         </a>
 
