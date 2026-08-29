@@ -3,63 +3,274 @@
 @section('title', $titulo)
 
 @push('styles')
-
 <style>
 
     .anuncios-pagina {
-
+        width: 100%;
         max-width: 900px;
-
         margin: 0 auto;
-
+        text-align: left;
     }
 
 
+    /* =====================================================
+       CABECERA
+    ===================================================== */
+
+    .anuncio-meta-cabecera {
+        margin-left: auto;
+
+        color: #777;
+
+        font-size: 13px;
+
+        font-weight: normal;
+
+        white-space: nowrap;
+    }
+
     .anuncios-cabecera {
-
         display: flex;
-
         align-items: center;
-
         justify-content: space-between;
 
         gap: 20px;
-
         margin-bottom: 20px;
-
     }
-
 
     .anuncios-cabecera h1 {
-
         margin: 0;
-
     }
 
 
+    /* =====================================================
+       BOTÓN PUBLICAR
+    ===================================================== */
+
     .boton-publicar {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
 
-        padding: 11px 16px;
+        padding: 10px 14px;
 
-        border: 0;
-
+        border: none;
         border-radius: 6px;
 
         background: #198754;
-
         color: white;
 
         cursor: pointer;
 
-        font: inherit;
+        font-size: 14px;
+        font-weight: bold;
 
+        white-space: nowrap;
+    }
+
+    .boton-publicar:hover {
+        background: #157347;
     }
 
 
-    .boton-publicar:hover {
+    /* =====================================================
+       ACORDEONES
+    ===================================================== */
 
-        background: #157347;
+    .anuncio-acordeon {
+        width: 100%;
 
+        margin-bottom: 12px;
+
+        border-radius: 8px;
+
+        background: white;
+
+        box-shadow: 0 3px 12px rgba(0, 0, 0, 0.08);
+
+        overflow: hidden;
+
+        text-align: left;
+    }
+
+    .anuncio-acordeon summary {
+        display: flex;
+        align-items: center;
+
+        gap: 12px;
+
+        width: 100%;
+
+        box-sizing: border-box;
+
+        padding: 16px 20px;
+
+        cursor: pointer;
+
+        list-style: none;
+
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .anuncio-acordeon summary::-webkit-details-marker {
+        display: none;
+    }
+
+    .anuncio-acordeon summary::after {
+        content: '›';
+
+        margin-left: auto;
+
+        color: #777;
+
+        font-size: 22px;
+
+        transition: transform 0.2s ease;
+    }
+
+    .anuncio-acordeon[open] summary::after {
+        transform: rotate(90deg);
+    }
+
+    .anuncio-acordeon summary:hover {
+        background: #f5f5f5;
+    }
+
+
+    /* =====================================================
+       CONTENIDO
+    ===================================================== */
+
+    .anuncio-contenido {
+        width: 100%;
+
+        box-sizing: border-box;
+
+        padding: 15px 20px 20px;
+
+        border-top: 1px solid #eee;
+
+        text-align: left;
+    }
+
+
+    /* =====================================================
+       DESCRIPCIÓN
+    ===================================================== */
+
+    .anuncio-texto {
+        display: block;
+
+        width: 100%;
+
+        box-sizing: border-box;
+
+        margin: 0;
+
+        padding: 10px 12px;
+
+        border-radius: 5px;
+
+        background: #1f1f1f;
+
+        color: #f1f1f1;
+
+        font-family: Consolas, Monaco, monospace;
+
+        font-size: 12px;
+
+        line-height: 1.5;
+
+        text-align: left;
+
+        white-space: normal;
+
+        overflow-wrap: anywhere;
+
+        word-break: break-word;
+    }
+
+
+    /* =====================================================
+       AUTOR / FECHA
+    ===================================================== */
+
+    .anuncio-meta {
+        margin-top: 10px;
+
+        color: #666;
+
+        font-size: 13px;
+    }
+
+
+    /* =====================================================
+       ACCIONES
+    ===================================================== */
+
+    .anuncio-acciones {
+        display: flex;
+
+        align-items: center;
+
+        justify-content: flex-end;
+
+        gap: 8px;
+
+        margin-top: 15px;
+    }
+
+
+    .boton-editar {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        padding: 7px 11px;
+
+        border: none;
+        border-radius: 5px;
+
+        background: #f08c00;
+        color: white;
+
+        cursor: pointer;
+
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    .boton-editar:hover {
+        background: #d97700;
+    }
+
+
+    .boton-eliminar {
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        width: 32px;
+        height: 32px;
+
+        padding: 0;
+
+        border: none;
+        border-radius: 5px;
+
+        background: #dc3545;
+        color: white;
+
+        cursor: pointer;
+
+        font-size: 14px;
+    }
+
+    .boton-eliminar:hover {
+        background: #bb2d3b;
     }
 
 
@@ -68,7 +279,6 @@
     ===================================================== */
 
     .modal-anuncio {
-
         display: none;
 
         position: fixed;
@@ -78,25 +288,18 @@
         z-index: 1500;
 
         align-items: center;
-
         justify-content: center;
 
         padding: 20px;
 
         background: rgba(0, 0, 0, 0.45);
-
     }
-
 
     .modal-anuncio.abierto {
-
         display: flex;
-
     }
 
-
     .modal-contenido {
-
         width: min(520px, 100%);
 
         padding: 24px;
@@ -105,54 +308,61 @@
 
         background: white;
 
-        box-shadow:
-            0 5px 20px rgba(0, 0, 0, 0.2);
-
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
     }
 
-
     .modal-cabecera {
-
         display: flex;
 
         align-items: center;
-
         justify-content: space-between;
 
-        gap: 16px;
+        gap: 15px;
 
+        margin-bottom: 20px;
     }
-
 
     .modal-cabecera h2 {
-
-        margin-top: 0;
-
+        margin: 0;
     }
 
-
     .modal-cerrar {
-
-        border: 0;
+        border: none;
 
         background: transparent;
 
         color: #555;
 
-        font-size: 24px;
+        font-size: 25px;
 
         cursor: pointer;
-
     }
 
 
-    .modal-contenido textarea {
+    /* =====================================================
+       CAMPOS
+    ===================================================== */
 
+    .campo {
+        margin-bottom: 17px;
+    }
+
+    .campo label {
+        display: block;
+
+        margin-bottom: 7px;
+
+        color: #333;
+
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .campo input,
+    .campo textarea {
         width: 100%;
 
-        min-height: 130px;
-
-        resize: vertical;
+        box-sizing: border-box;
 
         padding: 11px;
 
@@ -161,122 +371,45 @@
         border-radius: 6px;
 
         font: inherit;
-
     }
 
+    .campo textarea {
+        min-height: 160px;
 
-    .modal-contenido .boton-publicar {
-
-        margin-top: 10px;
-
+        resize: vertical;
     }
 
+    .campo input:focus,
+    .campo textarea:focus {
+        outline: none;
 
-    /* =====================================================
-       LISTA
-    ===================================================== */
-
-    .anuncios-lista {
-
-        display: grid;
-
-        gap: 14px;
-
+        border-color: #198754;
     }
 
 
     /* =====================================================
-       ANUNCIO
+       BOTÓN GUARDAR
     ===================================================== */
 
-    .anuncio {
+    .boton-guardar {
+        width: 100%;
 
-        position: relative;
+        padding: 11px;
 
-        padding: 22px;
+        border: none;
+        border-radius: 6px;
 
-        padding-right: 60px;
-
-        border-radius: 8px;
-
-        background: white;
-
-        box-shadow:
-            0 3px 12px rgba(0, 0, 0, 0.08);
-
-    }
-
-
-    .anuncio-contenido {
-
-        margin: 0 0 12px;
-
-        white-space: pre-wrap;
-
-        overflow-wrap: anywhere;
-
-    }
-
-
-    .anuncio-meta {
-
-        color: #666;
-
-        font-size: 13px;
-
-    }
-
-
-    /* =====================================================
-       PAPELERA
-    ===================================================== */
-
-    .form-eliminar-anuncio {
-
-        position: absolute;
-
-        top: 18px;
-
-        right: 18px;
-
-        margin: 0;
-
-    }
-
-
-    .boton-eliminar-anuncio {
-
-        display: flex;
-
-        align-items: center;
-
-        justify-content: center;
-
-        width: 32px;
-
-        height: 32px;
-
-        padding: 0;
-
-        border: 0;
-
-        border-radius: 5px;
-
-        background: #dc3545;
-
+        background: #198754;
         color: white;
 
         cursor: pointer;
 
-        font-size: 15px;
-
+        font: inherit;
+        font-weight: bold;
     }
 
-
-    .boton-eliminar-anuncio:hover {
-
-        background: #bb2d3b;
-
+    .boton-guardar:hover {
+        background: #157347;
     }
 
 
@@ -285,37 +418,37 @@
     ===================================================== */
 
     .anuncios-vacio {
-
         color: #666;
-
     }
 
 
     /* =====================================================
-       RESPONSIVE
+       MÓVIL
     ===================================================== */
 
-    @media (max-width: 700px) {
+    @media (max-width: 600px) {
 
         .anuncios-cabecera {
-
             align-items: flex-start;
 
             flex-direction: column;
-
         }
 
-
         .boton-publicar {
-
             width: 100%;
+        }
 
+        .anuncio-contenido {
+            padding: 12px 15px 15px;
+        }
+
+        .anuncio-texto {
+            font-size: 11px;
         }
 
     }
 
 </style>
-
 @endpush
 
 
@@ -331,114 +464,23 @@
     <div class="anuncios-cabecera">
 
         <h1>
-
             {{ $titulo }}
-
         </h1>
 
 
         @if($puedePublicar)
 
             <button
-                class="boton-publicar"
                 type="button"
+                class="boton-publicar"
                 id="abrir-modal-anuncio"
             >
-
-                Publicar anuncio
-
+                📢 Publicar anuncio
             </button>
 
         @endif
 
     </div>
-
-
-
-    {{-- =====================================================
-         MODAL
-    ===================================================== --}}
-
-    @if($puedePublicar)
-
-        <div
-            class="modal-anuncio"
-            id="modal-anuncio"
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="titulo-anuncio"
-        >
-
-            <section class="modal-contenido">
-
-                <div class="modal-cabecera">
-
-                    <h2 id="titulo-anuncio">
-
-                        @if($rutaPublicar === 'briefing')
-
-                            Publicar briefing
-
-                        @elseif($rutaPublicar === 'plantilla-mensajes')
-
-                            Publicar mensaje
-
-                        @else
-
-                            Publicar anuncio
-
-                        @endif
-
-                    </h2>
-
-
-                    <button
-                        class="modal-cerrar"
-                        type="button"
-                        id="cerrar-modal-anuncio"
-                        aria-label="Cerrar"
-                    >
-
-                        &times;
-
-                    </button>
-
-                </div>
-
-
-                <form
-                    action="{{ route($rutaPublicar . '.store') }}"
-                    method="POST"
-                >
-
-                    @csrf
-
-
-                    <textarea
-                        name="contenido"
-                        maxlength="2000"
-                        placeholder="Escribe un anuncio..."
-                        required
-                    ></textarea>
-
-
-                    <button
-                        class="boton-publicar"
-                        type="submit"
-                    >
-
-                        Publicar
-
-                    </button>
-
-                </form>
-
-            </section>
-
-        </div>
-
-    @endif
-
 
 
     {{-- =====================================================
@@ -449,120 +491,121 @@
 
         @forelse($anuncios as $anuncio)
 
-            <article class="anuncio">
+            <details class="anuncio-acordeon">
+
+                {{-- TÍTULO DEL ACORDEÓN --}}
+
+                <summary>
+
+                    📢
+
+                    <span class="anuncio-titulo">
+                        {{ $anuncio->titulo }}
+                    </span>
+
+                    <span class="anuncio-meta-cabecera">
+                        {{ $anuncio->autor }} · {{ $anuncio->created_at }}
+                    </span>
+
+                </summary>
 
 
-                {{-- =================================================
-                     PAPELERA
-                ================================================== --}}
+                {{-- CONTENIDO --}}
 
-                @if($puedePublicar)
-
-                    <form
-
-                        class="form-eliminar-anuncio"
-
-                        action="{{
-                            match($rutaPublicar) {
-
-                                'briefing' =>
-                                    route(
-                                        'briefing.destroy',
-                                        $anuncio->id
-                                    ),
-
-                                'plantilla-mensajes' =>
-                                    route(
-                                        'plantilla-mensajes.destroy',
-                                        $anuncio->id
-                                    ),
-
-                                default =>
-                                    route(
-                                        'anuncios.destroy',
-                                        $anuncio->id
-                                    ),
-                            }
-                        }}"
-
-                        method="POST"
-
-                        onsubmit="
-                            return confirm(
-                                '¿Seguro que quieres eliminar este anuncio?'
-                            );
-                        "
-                    >
-
-                        @csrf
-
-                        @method('DELETE')
+                <div class="anuncio-contenido">
 
 
-                        <button
-                            type="submit"
-                            class="boton-eliminar-anuncio"
-                            title="Eliminar anuncio"
-                            aria-label="Eliminar anuncio"
-                        >
+                    {{-- DESCRIPCIÓN --}}
 
-                            🗑️
+                    <div class="anuncio-texto">
 
-                        </button>
+                        {{ $anuncio->contenido }}
 
-                    </form>
+                    </div>
 
-                @endif
+                    {{-- ACCIONES DIRECTIVA --}}
 
+                    @if($puedePublicar)
+
+                        <div class="anuncio-acciones">
 
 
-                {{-- =================================================
-                     CONTENIDO
-                ================================================== --}}
+                            {{-- EDITAR --}}
 
-                <p class="anuncio-contenido">
+                            <button
+                                type="button"
+                                class="boton-editar"
+                                onclick="abrirEditarAnuncio(
+                                    {{ $anuncio->id }},
+                                    @js($anuncio->titulo),
+                                    @js($anuncio->contenido)
+                                )"
+                            >
+                                ✏️ Editar
+                            </button>
 
-                    {{ $anuncio->contenido }}
 
-                </p>
+                            {{-- ELIMINAR --}}
 
+                            <form
+                                action="{{
+                                    match($rutaPublicar) {
 
+                                        'briefing' =>
+                                            route(
+                                                'briefing.destroy',
+                                                $anuncio->id
+                                            ),
 
-                {{-- =================================================
-                     AUTOR Y FECHA
-                ================================================== --}}
+                                        'plantilla-mensajes' =>
+                                            route(
+                                                'plantilla-mensajes.destroy',
+                                                $anuncio->id
+                                            ),
 
-                <div class="anuncio-meta">
+                                        default =>
+                                            route(
+                                                'anuncios.destroy',
+                                                $anuncio->id
+                                            ),
+                                    }
+                                }}"
+                                method="POST"
 
-                    {{ $anuncio->autor }}
+                                onsubmit="
+                                    return confirm(
+                                        '¿Seguro que quieres eliminar este anuncio?'
+                                    );
+                                "
+                            >
 
-                    ·
+                                @csrf
 
-                    {{ $anuncio->created_at }}
+                                @method('DELETE')
+
+                                <button
+                                    type="submit"
+                                    class="boton-eliminar"
+                                    title="Eliminar"
+                                >
+                                    🗑️
+                                </button>
+
+                            </form>
+
+                        </div>
+
+                    @endif
+
 
                 </div>
 
-
-            </article>
+            </details>
 
         @empty
 
             <p class="anuncios-vacio">
-
-                @if($rutaPublicar === 'briefing')
-
-                    No hay briefings publicados.
-
-                @elseif($rutaPublicar === 'plantilla-mensajes')
-
-                    No hay mensajes publicados.
-
-                @else
-
-                    No hay anuncios publicados.
-
-                @endif
-
+                No hay anuncios publicados.
             </p>
 
         @endforelse
@@ -571,143 +614,379 @@
 
 </div>
 
-@endsection
 
-
-
-{{-- =========================================================
-     JAVASCRIPT
-========================================================= --}}
+{{-- =====================================================
+     MODAL CREAR
+===================================================== --}}
 
 @if($puedePublicar)
 
-    @push('scripts')
+<div
+    class="modal-anuncio"
+    id="modal-anuncio"
+>
 
-    <script>
+    <section class="modal-contenido">
 
-        const modalAnuncio =
-            document.getElementById(
-                'modal-anuncio'
-            );
+        <div class="modal-cabecera">
 
+            <h2>
+                📢 Nuevo anuncio
+            </h2>
 
-        const abrirModalAnuncio =
-            document.getElementById(
-                'abrir-modal-anuncio'
-            );
+            <button
+                type="button"
+                class="modal-cerrar"
+                id="cerrar-modal-anuncio"
+            >
+                &times;
+            </button>
 
-
-        const cerrarModalAnuncio =
-            document.getElementById(
-                'cerrar-modal-anuncio'
-            );
-
-
-        /*
-        |--------------------------------------------------------------------------
-        | ABRIR
-        |--------------------------------------------------------------------------
-        */
-
-        if (
-            modalAnuncio &&
-            abrirModalAnuncio
-        ) {
-
-            abrirModalAnuncio.addEventListener(
-                'click',
-                function () {
-
-                    modalAnuncio.classList.add(
-                        'abierto'
-                    );
-
-                }
-            );
-
-        }
+        </div>
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | CERRAR
-        |--------------------------------------------------------------------------
-        */
+        <form
+            action="{{ route($rutaPublicar . '.store') }}"
+            method="POST"
+        >
 
-        if (
-            modalAnuncio &&
-            cerrarModalAnuncio
-        ) {
-
-            cerrarModalAnuncio.addEventListener(
-                'click',
-                function () {
-
-                    modalAnuncio.classList.remove(
-                        'abierto'
-                    );
-
-                }
-            );
-
-        }
+            @csrf
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | CERRAR HACIENDO CLICK FUERA
-        |--------------------------------------------------------------------------
-        */
+            {{-- TÍTULO --}}
 
-        if (modalAnuncio) {
+            <div class="campo">
 
-            modalAnuncio.addEventListener(
-                'click',
-                function (event) {
+                <label for="titulo">
+                    Título
+                </label>
 
-                    if (
-                        event.target ===
-                        modalAnuncio
-                    ) {
+                <input
+                    type="text"
+                    id="titulo"
+                    name="titulo"
+                    maxlength="150"
+                    placeholder="Ejemplo: Nuevo procedimiento policial"
+                    required
+                >
 
-                        modalAnuncio.classList.remove(
-                            'abierto'
-                        );
-
-                    }
-
-                }
-            );
-
-        }
+            </div>
 
 
-        /*
-        |--------------------------------------------------------------------------
-        | ESC
-        |--------------------------------------------------------------------------
-        */
+            {{-- DESCRIPCIÓN --}}
 
-        document.addEventListener(
-            'keydown',
-            function (event) {
+            <div class="campo">
 
-                if (
-                    event.key === 'Escape' &&
-                    modalAnuncio
-                ) {
+                <label for="contenido">
+                    Descripción
+                </label>
 
-                    modalAnuncio.classList.remove(
-                        'abierto'
-                    );
+                <textarea
+                    id="contenido"
+                    name="contenido"
+                    maxlength="2000"
+                    placeholder="Escribe aquí el contenido del anuncio..."
+                    required
+                ></textarea>
 
-                }
+            </div>
+
+
+            <button
+                type="submit"
+                class="boton-guardar"
+            >
+                📢 Publicar anuncio
+            </button>
+
+        </form>
+
+    </section>
+
+</div>
+
+
+{{-- =====================================================
+     MODAL EDITAR
+===================================================== --}}
+
+<div
+    class="modal-anuncio"
+    id="modal-editar-anuncio"
+>
+
+    <section class="modal-contenido">
+
+        <div class="modal-cabecera">
+
+            <h2>
+                ✏️ Editar anuncio
+            </h2>
+
+            <button
+                type="button"
+                class="modal-cerrar"
+                id="cerrar-modal-editar"
+            >
+                &times;
+            </button>
+
+        </div>
+
+
+        <form
+            id="form-editar-anuncio"
+            method="POST"
+        >
+
+            @csrf
+
+            @method('PUT')
+
+
+            {{-- TÍTULO --}}
+
+            <div class="campo">
+
+                <label for="titulo-editar">
+                    Título
+                </label>
+
+                <input
+                    type="text"
+                    id="titulo-editar"
+                    name="titulo"
+                    maxlength="150"
+                    required
+                >
+
+            </div>
+
+
+            {{-- DESCRIPCIÓN --}}
+
+            <div class="campo">
+
+                <label for="contenido-editar">
+                    Descripción
+                </label>
+
+                <textarea
+                    id="contenido-editar"
+                    name="contenido"
+                    maxlength="2000"
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="boton-guardar"
+            >
+                💾 Guardar cambios
+            </button>
+
+        </form>
+
+    </section>
+
+</div>
+
+@endif
+
+@endsection
+
+
+@push('scripts')
+
+<script>
+
+    /*
+    |--------------------------------------------------------------------------
+    | MODAL CREAR
+    |--------------------------------------------------------------------------
+    */
+
+    const modalAnuncio =
+        document.getElementById('modal-anuncio');
+
+    const abrirModalAnuncio =
+        document.getElementById('abrir-modal-anuncio');
+
+    const cerrarModalAnuncio =
+        document.getElementById('cerrar-modal-anuncio');
+
+
+    if (abrirModalAnuncio) {
+
+        abrirModalAnuncio.addEventListener(
+            'click',
+            function () {
+
+                modalAnuncio.classList.add('abierto');
 
             }
         );
 
-    </script>
+    }
 
-    @endpush
 
-@endif
+    if (cerrarModalAnuncio) {
+
+        cerrarModalAnuncio.addEventListener(
+            'click',
+            function () {
+
+                modalAnuncio.classList.remove('abierto');
+
+            }
+        );
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | MODAL EDITAR
+    |--------------------------------------------------------------------------
+    */
+
+    const modalEditar =
+        document.getElementById('modal-editar-anuncio');
+
+    const cerrarModalEditar =
+        document.getElementById('cerrar-modal-editar');
+
+    const formEditar =
+        document.getElementById('form-editar-anuncio');
+
+    const tituloEditar =
+        document.getElementById('titulo-editar');
+
+    const contenidoEditar =
+        document.getElementById('contenido-editar');
+
+
+    function abrirEditarAnuncio(
+        id,
+        titulo,
+        contenido
+    ) {
+
+        tituloEditar.value = titulo;
+
+        contenidoEditar.value = contenido;
+
+
+        @if($rutaPublicar === 'briefing')
+
+            formEditar.action =
+                "{{ url('/briefing') }}/" + id;
+
+        @elseif($rutaPublicar === 'plantilla-mensajes')
+
+            formEditar.action =
+                "{{ url('/plantilla-mensajes') }}/" + id;
+
+        @else
+
+            formEditar.action =
+                "{{ url('/anuncios') }}/" + id;
+
+        @endif
+
+
+        modalEditar.classList.add('abierto');
+
+    }
+
+
+    if (cerrarModalEditar) {
+
+        cerrarModalEditar.addEventListener(
+            'click',
+            function () {
+
+                modalEditar.classList.remove('abierto');
+
+            }
+        );
+
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | CERRAR AL PULSAR FUERA
+    |--------------------------------------------------------------------------
+    */
+
+    document.addEventListener(
+        'click',
+        function (event) {
+
+            if (
+                event.target === modalAnuncio
+            ) {
+
+                modalAnuncio.classList.remove(
+                    'abierto'
+                );
+
+            }
+
+
+            if (
+                event.target === modalEditar
+            ) {
+
+                modalEditar.classList.remove(
+                    'abierto'
+                );
+
+            }
+
+        }
+    );
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | ESC
+    |--------------------------------------------------------------------------
+    */
+
+    document.addEventListener(
+        'keydown',
+        function (event) {
+
+            if (event.key !== 'Escape') {
+                return;
+            }
+
+
+            if (modalAnuncio) {
+
+                modalAnuncio.classList.remove(
+                    'abierto'
+                );
+
+            }
+
+
+            if (modalEditar) {
+
+                modalEditar.classList.remove(
+                    'abierto'
+                );
+
+            }
+
+        }
+    );
+
+</script>
+
+@endpush

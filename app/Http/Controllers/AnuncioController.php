@@ -35,39 +35,57 @@ class AnuncioController extends Controller
         );
 
 
+        /*
+        Obtener anuncios
+        */
+
         $anuncios = DB::table('anuncios')
+
             ->join(
                 'agentes',
                 'agentes.id',
                 '=',
                 'anuncios.agente_id'
             )
+
             ->where(
                 'anuncios.tipo',
                 $tipo
             )
+
             ->select(
                 'anuncios.id',
+                'anuncios.titulo',
                 'anuncios.contenido',
                 'anuncios.created_at',
                 'agentes.nombre as autor'
             )
+
             ->orderByDesc(
                 'anuncios.created_at'
             )
+
             ->get();
 
+
+        /*
+        Mostrar página
+        */
 
         return view(
             'anuncios',
             [
-                'anuncios' => $anuncios,
+
+                'anuncios' =>
+                    $anuncios,
+
 
                 'puedePublicar' =>
                     $this->puedePublicar(
                         $usuarioId,
                         $tipo
                     ),
+
 
                 'titulo' => match ($tipo) {
 
@@ -78,7 +96,7 @@ class AnuncioController extends Controller
                         'Mensajes-divisiones',
 
                     'busqueda-captura' =>
-                        'Busqueda y captura activas',
+                        'Búsqueda y captura activas',
 
                     'plantilla-mensajes' =>
                         'Plantilla mensajes',
@@ -87,7 +105,10 @@ class AnuncioController extends Controller
                         'Anuncios',
                 },
 
-                'rutaPublicar' => $tipo,
+
+                'rutaPublicar' =>
+                    $tipo,
+
             ]
         );
     }
@@ -107,6 +128,10 @@ class AnuncioController extends Controller
             $this->usuarioId($request);
 
 
+        /*
+        Comprobar tipo
+        */
+
         abort_unless(
             in_array(
                 $tipo,
@@ -123,6 +148,10 @@ class AnuncioController extends Controller
         );
 
 
+        /*
+        Comprobar permisos
+        */
+
         abort_unless(
             $this->puedePublicar(
                 $usuarioId,
@@ -132,7 +161,17 @@ class AnuncioController extends Controller
         );
 
 
+        /*
+        Validar
+        */
+
         $datos = $request->validate([
+            'titulo' => [
+                'required',
+                'string',
+                'max:150',
+            ],
+
             'contenido' => [
                 'required',
                 'string',
@@ -140,6 +179,10 @@ class AnuncioController extends Controller
             ],
         ]);
 
+
+        /*
+        Crear anuncio
+        */
 
         DB::table('anuncios')->insert([
 
@@ -149,8 +192,11 @@ class AnuncioController extends Controller
             'tipo' =>
                 $tipo,
 
+            'titulo' =>
+                trim($datos['titulo']),
+
             'contenido' =>
-                $datos['contenido'],
+                trim($datos['contenido']),
 
             'created_at' =>
                 now(),
@@ -160,6 +206,10 @@ class AnuncioController extends Controller
 
         ]);
 
+
+        /*
+        Volver al apartado
+        */
 
         return redirect()->route(
             match ($tipo) {
@@ -179,6 +229,126 @@ class AnuncioController extends Controller
                 default =>
                     'anuncios.index',
             }
+        )->with(
+            'mensaje',
+            'Publicado correctamente.'
+        );
+    }
+
+
+    /*
+    |--------------------------------------------------------------------------
+    | EDITAR
+    |--------------------------------------------------------------------------
+    */
+
+    public function update(
+        Request $request,
+        int $anuncio
+    ) {
+        $usuarioId =
+            $this->usuarioId($request);
+
+
+        /*
+        Solo quien tenga permiso
+        */
+
+        $registro = DB::table('anuncios')
+            ->where(
+                'id',
+                $anuncio
+            )
+            ->first();
+
+
+        abort_unless(
+            $registro,
+            404
+        );
+
+
+        /*
+        Comprobar permisos según
+        el tipo de anuncio
+        */
+
+        abort_unless(
+            $this->puedePublicar(
+                $usuarioId,
+                $registro->tipo
+            ),
+            403
+        );
+
+
+        /*
+        Validar
+        */
+
+        $datos = $request->validate([
+            'titulo' => [
+                'required',
+                'string',
+                'max:150',
+            ],
+
+            'contenido' => [
+                'required',
+                'string',
+                'max:2000',
+            ],
+        ]);
+
+
+        /*
+        Actualizar
+        */
+
+        DB::table('anuncios')
+            ->where(
+                'id',
+                $anuncio
+            )
+            ->update([
+
+                'titulo' =>
+                    trim($datos['titulo']),
+
+                'contenido' =>
+                    trim($datos['contenido']),
+
+                'updated_at' =>
+                    now(),
+
+            ]);
+
+
+        /*
+        Volver al apartado
+        */
+
+        return redirect()->route(
+            match ($registro->tipo) {
+
+                'briefing' =>
+                    'briefing.index',
+
+                'mensajes-divisiones' =>
+                    'mensajes-divisiones.index',
+
+                'busqueda-captura' =>
+                    'busqueda-captura.index',
+
+                'plantilla-mensajes' =>
+                    'plantilla-mensajes.index',
+
+                default =>
+                    'anuncios.index',
+            }
+        )->with(
+            'mensaje',
+            'Actualizado correctamente.'
         );
     }
 
@@ -195,16 +365,6 @@ class AnuncioController extends Controller
     ) {
         $usuarioId =
             $this->usuarioId($request);
-
-
-        /*
-        Solo Directiva puede eliminar
-        */
-
-        abort_unless(
-            $this->esDirectiva($usuarioId),
-            403
-        );
 
 
         /*
@@ -226,19 +386,13 @@ class AnuncioController extends Controller
 
 
         /*
-        Solo permitimos borrar
-        estos apartados
+        Comprobar permisos
         */
 
         abort_unless(
-            in_array(
-                $registro->tipo,
-                [
-                    'anuncios',
-                    'briefing',
-                    'plantilla-mensajes',
-                ],
-                true
+            $this->puedePublicar(
+                $usuarioId,
+                $registro->tipo
             ),
             403
         );
@@ -258,7 +412,6 @@ class AnuncioController extends Controller
 
         /*
         Volver al apartado
-        correspondiente
         */
 
         return redirect()->route(
@@ -267,12 +420,21 @@ class AnuncioController extends Controller
                 'briefing' =>
                     'briefing.index',
 
+                'mensajes-divisiones' =>
+                    'mensajes-divisiones.index',
+
+                'busqueda-captura' =>
+                    'busqueda-captura.index',
+
                 'plantilla-mensajes' =>
                     'plantilla-mensajes.index',
 
                 default =>
                     'anuncios.index',
             }
+        )->with(
+            'mensaje',
+            'Eliminado correctamente.'
         );
     }
 
@@ -293,9 +455,10 @@ class AnuncioController extends Controller
                 ->has('usuario_id')
         ) {
 
-            return redirect()
-                ->route('login');
-
+            abort(
+                redirect()
+                    ->route('login')
+            );
         }
 
 
@@ -361,10 +524,12 @@ class AnuncioController extends Controller
         ) {
 
             return DB::table('agentes')
+
                 ->where(
                     'id',
                     $usuarioId
                 )
+
                 ->exists();
         }
 
@@ -397,6 +562,7 @@ class AnuncioController extends Controller
                     function ($query) {
 
                         $query
+
                             ->where(
                                 'agentes.rango',
                                 'Fiscal'
