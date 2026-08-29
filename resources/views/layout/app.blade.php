@@ -689,7 +689,10 @@
                             📋 Procedimientos
                         </a>
 
-                        <a href="#">
+                        <a
+                            href="{{ route('jefes-divisiones.index') }}"
+                            class="{{ request()->routeIs('jefes-divisiones.*') ? 'activo' : '' }}"
+                        >
                             👮 Jefes divisiones
                         </a>
 

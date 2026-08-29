@@ -15,6 +15,7 @@ use App\Http\Controllers\RangoController;
 use App\Http\Controllers\DrogasDniController;
 use App\Http\Controllers\DniRehenController;
 use App\Http\Controllers\PlantillaController;
+use App\Http\Controllers\JefeDivisionController;
 
 
 /*
@@ -258,6 +259,18 @@ Route::view('/certificado-antecedentes', 'certificado_antecedentes')
 
 Route::view('/plantilla', 'plantilla')
     ->name('plantilla.index');
-    
+
 Route::get('/plantilla', [PlantillaController::class, 'index'])
     ->name('plantilla.index');
+
+Route::get('/jefes-divisiones', [JefeDivisionController::class, 'index'])
+    ->name('jefes-divisiones.index');
+
+Route::get('/jefes-divisiones/{division}/editar', [JefeDivisionController::class, 'edit'])
+    ->name('jefes-divisiones.edit');
+
+Route::put('/jefes-divisiones/{division}', [JefeDivisionController::class, 'update'])
+    ->name('jefes-divisiones.update');
+
+Route::get('/postulacion-divisiones', [PostulacionDivisionController::class, 'index'])
+    ->name('postulacion-divisiones.index');
