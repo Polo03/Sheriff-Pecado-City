@@ -505,7 +505,7 @@
                 </div>
 
                 <a
-                    href="TU_ENLACE_DE_DISCORD"
+                    href="https://discord.gg/2bCkCKQreb"
                     target="_blank"
                     rel="noopener noreferrer"
                     class="boton-discord"
