@@ -17,6 +17,7 @@ use App\Http\Controllers\DniRehenController;
 use App\Http\Controllers\PlantillaController;
 use App\Http\Controllers\JefeDivisionController;
 use App\Http\Controllers\AbogadoController;
+use App\Http\Controllers\PeasController;
 
 
 /*
@@ -286,3 +287,12 @@ Route::put('/abogados', [AbogadoController::class, 'update'])
     ->name('abogados.update');
 
 Route::view('/bindeos', 'bindeos')->name('bindeos.index');
+
+Route::get('/peas', [PeasController::class, 'index'])
+    ->name('peas.index');
+
+Route::get('/peas/editar', [PeasController::class, 'edit'])
+    ->name('peas.edit');
+
+Route::put('/peas', [PeasController::class, 'update'])
+    ->name('peas.update');

@@ -721,8 +721,11 @@
                             ⚖️ Abogados
                         </a>
 
-                        <a href="#">
-                            📋 PEAS
+                        <a
+                            href="{{ route('peas.index') }}"
+                            class="{{ request()->routeIs('peas.*') ? 'activo' : '' }}"
+                        >
+                            🚨 PEAS
                         </a>
 
                         <a href="#">
