@@ -897,93 +897,233 @@
                 </details>
 
 
-                {{-- DIVISIONES --}}
+                {{-- =====================================================
+     DIVISIONES
+===================================================== --}}
 
-                <details
-                    {{ request()->is('divisiones/*') ? 'open' : '' }}
+@php
+
+    $usuarioDivisionMenuId =
+        session('usuario_id');
+
+    $divisionesMenu =
+        collect();
+
+    $postulacionesMenu =
+        collect();
+
+
+    if ($usuarioDivisionMenuId) {
+
+        /*
+        |--------------------------------------------------------------------------
+        | DIVISIONES DEL AGENTE
+        |--------------------------------------------------------------------------
+        */
+
+        $divisionesMenu =
+            \Illuminate\Support\Facades\DB::table(
+                'agentes_divisiones'
+            )
+
+            ->join(
+                'divisiones',
+                'divisiones.id',
+                '=',
+                'agentes_divisiones.division'
+            )
+
+            ->leftJoin(
+                'rangos_divisiones',
+                'rangos_divisiones.id',
+                '=',
+                'agentes_divisiones.rango_division'
+            )
+
+            ->where(
+                'agentes_divisiones.agente',
+                $usuarioDivisionMenuId
+            )
+
+            ->where(
+                'agentes_divisiones.estado',
+                'activo'
+            )
+
+            ->select(
+                'divisiones.id',
+                'divisiones.nombre',
+                'rangos_divisiones.nombre as rango_division'
+            )
+
+            ->orderBy(
+                'divisiones.nombre'
+            )
+
+            ->get();
+
+
+        /*
+        |--------------------------------------------------------------------------
+        | POSTULACIONES
+        |--------------------------------------------------------------------------
+        */
+
+        $postulacionesMenu =
+            \Illuminate\Support\Facades\DB::table(
+                'agentes_divisiones'
+            )
+
+            ->join(
+                'divisiones',
+                'divisiones.id',
+                '=',
+                'agentes_divisiones.division'
+            )
+
+            ->where(
+                'agentes_divisiones.agente',
+                $usuarioDivisionMenuId
+            )
+
+            ->where(
+                'agentes_divisiones.estado',
+                'postulacion'
+            )
+
+            ->select(
+                'agentes_divisiones.id',
+                'agentes_divisiones.division',
+                'divisiones.nombre'
+            )
+
+            ->orderBy(
+                'divisiones.nombre'
+            )
+
+            ->get();
+
+    }
+
+
+    $tieneDivisionesMenu =
+        $divisionesMenu->isNotEmpty()
+        ||
+        $postulacionesMenu->isNotEmpty();
+
+@endphp
+
+
+@if($tieneDivisionesMenu)
+
+    <details
+        {{ request()->routeIs('divisiones.*') ? 'open' : '' }}
+    >
+
+        <summary
+            class="{{
+                request()->routeIs('divisiones.*')
+                    ? 'activo'
+                    : ''
+            }}"
+        >
+
+            <span class="sidebar-icono">
+                🏢
+            </span>
+
+            <span class="texto-menu">
+                Divisiones
+            </span>
+
+        </summary>
+
+
+        <div class="submenu-lateral">
+
+
+            {{-- =================================================
+                 DIVISIONES A LAS QUE PERTENECE
+            ================================================== --}}
+
+            @foreach($divisionesMenu as $divisionMenu)
+
+                <a
+                    href="{{
+                        route(
+                            'divisiones.show',
+                            $divisionMenu->id
+                        )
+                    }}"
                 >
 
-                    <summary>
+                    🏢
 
-                        <span class="sidebar-icono">
-                            🏢
-                        </span>
+                    {{ $divisionMenu->nombre }}
 
-                        <span class="texto-menu">
-                            Divisiones
-                        </span>
+                    @if($divisionMenu->rango_division)
 
-                    </summary>
+                        <small style="
+                            margin-left: 4px;
+                            opacity: .7;
+                        ">
+                            ({{ $divisionMenu->rango_division }})
+                        </small>
 
-                    <div class="submenu-lateral">
+                    @endif
 
-                        <a
-                            href="{{ route('menu.principal') }}"
-                        >
-                            ⚖️ Fiscalia
-                        </a>
+                </a>
 
-
-                        <a
-                            href="{{ route('menu.principal') }}"
-                        >
-                            🔎 Investigacion
-                        </a>
+            @endforeach
 
 
-                        <a
-                            href="{{ route('menu.principal') }}"
-                        >
-                            ⭐ Marshall
-                        </a>
+            {{-- =================================================
+                 POSTULACIONES
+            ================================================== --}}
+
+            @foreach($postulacionesMenu as $postulacionMenu)
+
+                @php
+
+                    $nombreAgente =
+                        \Illuminate\Support\Facades\DB::table(
+                            'agentes'
+                        )
+                        ->where(
+                            'id',
+                            $usuarioDivisionMenuId
+                        )
+                        ->value(
+                            'nombre'
+                        );
+
+                @endphp
 
 
-                        <a
-                            href="{{ route('menu.principal') }}"
-                        >
-                            🚓 Bani
-                        </a>
+                <a
+                    href="{{
+                        route(
+                            'divisiones.show',
+                            $postulacionMenu->division
+                        )
+                    }}"
+                >
+
+                    📋
+
+                    Postulación -
+                    {{ $nombreAgente }}
+
+                </a>
+
+            @endforeach
 
 
-                        <a
-                            href="{{ route('menu.principal') }}"
-                        >
-                            ✈️ Aeronautica
-                        </a>
+        </div>
 
+    </details>
 
-                        <a
-                            href="{{ route('menu.principal') }}"
-                        >
-                            🚔 Trooper
-                        </a>
-
-
-                        <a
-                            href="{{ route('menu.principal') }}"
-                        >
-                            🎙️ Entrevistador
-                        </a>
-
-
-                        <a
-                            href="{{ route('menu.principal') }}"
-                        >
-                            📚 Instruccion
-                        </a>
-
-
-                        <a
-                            href="{{ route('menu.principal') }}"
-                        >
-                            🛡️ Seguridad de gobierno
-                        </a>
-
-
-                    </div>
-
-                </details>
-
+@endif
 
                 {{-- FICHAJE --}}
 

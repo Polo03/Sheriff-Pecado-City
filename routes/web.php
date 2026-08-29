@@ -19,6 +19,7 @@ use App\Http\Controllers\JefeDivisionController;
 use App\Http\Controllers\AbogadoController;
 use App\Http\Controllers\PeasController;
 use App\Http\Controllers\ProcedimientosController;
+use App\Http\Controllers\DivisionController;
 
 
 /*
@@ -275,8 +276,9 @@ Route::get('/jefes-divisiones/{division}/editar', [JefeDivisionController::class
 Route::put('/jefes-divisiones/{division}', [JefeDivisionController::class, 'update'])
     ->name('jefes-divisiones.update');
 
-Route::get('/postulacion-divisiones', [PostulacionDivisionController::class, 'index'])
-    ->name('postulacion-divisiones.index');
+Route::get('/postulacion-divisiones', function () {
+    return redirect()->route('divisiones.menu');
+})->name('postulacion-divisiones.index');
 
 Route::get('/abogados', [AbogadoController::class, 'index'])
     ->name('abogados.index');
@@ -315,3 +317,26 @@ Route::put('/procedimientos/{id}', [ProcedimientosController::class, 'update'])
 
 Route::delete('/procedimientos/{id}', [ProcedimientosController::class, 'destroy'])
     ->name('procedimientos.destroy');
+
+/*
+|--------------------------------------------------------------------------
+| DIVISIONES
+|--------------------------------------------------------------------------
+*/
+
+Route::get(
+    '/divisiones',
+    [DivisionController::class, 'menu']
+)->name('divisiones.menu');
+
+
+Route::get(
+    '/divisiones/{division}',
+    [DivisionController::class, 'show']
+)->name('divisiones.show');
+
+
+Route::post(
+    '/divisiones/{division}/postular',
+    [DivisionController::class, 'postular']
+)->name('divisiones.postular');

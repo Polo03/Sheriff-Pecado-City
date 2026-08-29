@@ -441,12 +441,20 @@
 
                     <div class="division-acciones">
 
-                        <a
-                            href="{{ route('postulacion-divisiones.index') }}"
-                            class="boton-postular"
+                        <form
+                            action="{{ route('divisiones.postular', $division->id) }}"
+                            method="POST"
+                            class="form-postular"
                         >
-                            📝 Postular
-                        </a>
+                            @csrf
+
+                            <button
+                                type="submit"
+                                class="boton-postular"
+                            >
+                                📝 Postular
+                            </button>
+                        </form>
 
                     </div>
 
