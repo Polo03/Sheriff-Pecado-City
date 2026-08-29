@@ -694,7 +694,10 @@
                             🎮 Bindeos
                         </a>
 
-                        <a href="#">
+                        <a
+                            href="{{ route('certificado-antecedentes.index') }}"
+                            class="{{ request()->routeIs('certificado-antecedentes.*') ? 'activo' : '' }}"
+                        >
                             📜 Certificado de antecedentes
                         </a>
 

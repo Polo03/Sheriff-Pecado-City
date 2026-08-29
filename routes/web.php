@@ -251,3 +251,6 @@ Route::delete('/drogas-dni/{droga}', [DrogasDniController::class, 'destroy'])
     ->name('drogas-dni.destroy');
 
 Route::resource('dni-rehenes', DniRehenController::class);
+
+Route::view('/certificado-antecedentes', 'certificado_antecedentes')
+    ->name('certificado-antecedentes.index');
