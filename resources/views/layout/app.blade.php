@@ -693,7 +693,7 @@
                             href="{{ route('jefes-divisiones.index') }}"
                             class="{{ request()->routeIs('jefes-divisiones.*') ? 'activo' : '' }}"
                         >
-                            👮 Jefes divisiones
+                            👮 Divisiones
                         </a>
 
                         <a
@@ -708,10 +708,6 @@
                             class="{{ request()->routeIs('certificado-antecedentes.*') ? 'activo' : '' }}"
                         >
                             📜 Certificado de antecedentes
-                        </a>
-
-                        <a href="#">
-                            📝 Postulación divisiones
                         </a>
 
                         <a

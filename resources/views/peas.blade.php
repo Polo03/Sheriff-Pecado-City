@@ -12,6 +12,7 @@
         text-align: left;
     }
 
+
     /* =====================================================
        CABECERA
     ===================================================== */
@@ -29,15 +30,12 @@
 
     .peas-cabecera h1 {
         margin: 0 0 8px;
-
         text-align: left;
     }
 
     .peas-cabecera p {
         margin: 0;
-
         color: #666;
-
         text-align: left;
     }
 
@@ -48,10 +46,8 @@
 
     .boton-editar {
         display: inline-flex;
-
         align-items: center;
         justify-content: center;
-
         gap: 6px;
 
         padding: 10px 14px;
@@ -59,13 +55,11 @@
         border-radius: 6px;
 
         background: #f08c00;
-
         color: white;
 
         text-decoration: none;
 
         font-size: 14px;
-
         font-weight: bold;
 
         white-space: nowrap;
@@ -73,7 +67,6 @@
 
     .boton-editar:hover {
         background: #d97700;
-
         color: white;
     }
 
@@ -90,7 +83,6 @@
         border-radius: 6px;
 
         background: #d1e7dd;
-
         color: #0f5132;
 
         text-align: left;
@@ -119,7 +111,6 @@
 
     .peas-acordeon summary {
         display: flex;
-
         align-items: center;
 
         gap: 12px;
@@ -135,7 +126,6 @@
         list-style: none;
 
         font-size: 16px;
-
         font-weight: bold;
 
         text-align: left;
@@ -167,68 +157,53 @@
 
 
     /* =====================================================
-       CONTENIDO
+       CONTENIDO DEL ACORDEÓN
     ===================================================== */
 
     .peas-contenido {
-    width: 100%;
-    box-sizing: border-box;
-
-    padding: 0;
-
-    border-top: 1px solid #eee;
-
-    text-align: left;
-}
-
-.peas-descripcion {
-    width: 100%;
-    box-sizing: border-box;
-
-    margin: 0;
-    padding: 0;
-
-    border-radius: 6px;
-
-    background: #f5f5f5;
-
-    color: #444;
-
-    line-height: 1.6;
-
-    text-align: left;
-
-    white-space: pre-wrap;
-
-    overflow-wrap: break-word;
-    word-break: break-word;
-}
-
-
-    /* =====================================================
-       DESCRIPCIÓN
-    ===================================================== */
-
-    .peas-descripcion {
         width: 100%;
 
         box-sizing: border-box;
 
-        margin: 0;
+        padding: 15px 20px 20px;
 
-        padding: 15px;
+        border-top: 1px solid #eee;
 
-        border-radius: 6px;
+        text-align: left;
+    }
 
-        background: #f5f5f5;
 
-        color: #444;
+    /* =====================================================
+       BLOQUE DEL COMANDO
+    ===================================================== */
 
-        line-height: 1.6;
+    .peas-codigo {
+        position: relative;
+
+        display: block;
+
+        width: 100%;
+        max-width: 100%;
+
+        box-sizing: border-box;
+
+        padding: 10px 42px 10px 12px;
+
+        border-radius: 5px;
+
+        background: #1f1f1f;
+
+        color: #f1f1f1;
+
+        font-family: Consolas, Monaco, monospace;
+
+        font-size: 12px;
+
+        line-height: 1.5;
 
         text-align: left;
 
-        white-space: pre-wrap;
+        white-space: normal;
 
         overflow-wrap: break-word;
 
@@ -237,20 +212,90 @@
 
 
     /* =====================================================
-       RESPONSIVE
+       TEXTO
+    ===================================================== */
+
+    .texto-peas {
+        display: block;
+
+        width: 100%;
+
+        box-sizing: border-box;
+
+        padding-right: 5px;
+
+        text-align: left;
+
+        white-space: normal;
+
+        overflow-wrap: anywhere;
+
+        word-break: break-word;
+    }
+
+
+    /* =====================================================
+       BOTÓN COPIAR
+    ===================================================== */
+
+    .peas-copiar {
+        position: absolute;
+
+        top: 50%;
+        right: 6px;
+
+        transform: translateY(-50%);
+
+        width: 26px;
+        height: 26px;
+
+        padding: 0;
+        margin: 0;
+
+        display: flex;
+
+        align-items: center;
+        justify-content: center;
+
+        border: none;
+
+        border-radius: 4px;
+
+        background: #444;
+
+        color: white;
+
+        cursor: pointer;
+
+        font-size: 13px;
+
+        line-height: 1;
+
+        z-index: 2;
+    }
+
+    .peas-copiar:hover {
+        background: #555;
+    }
+
+    .peas-copiado {
+        background: #198754 !important;
+    }
+
+
+    /* =====================================================
+       MÓVIL
     ===================================================== */
 
     @media (max-width: 600px) {
 
         .peas-cabecera {
             align-items: flex-start;
-
             flex-direction: column;
         }
 
         .boton-editar {
             width: 100%;
-
             box-sizing: border-box;
         }
 
@@ -258,10 +303,18 @@
             padding: 12px 15px 15px;
         }
 
-        .peas-descripcion {
-            padding: 12px;
+        .peas-codigo {
+            padding: 9px 40px 9px 10px;
+            font-size: 11px;
+        }
 
-            font-size: 14px;
+        .peas-copiar {
+            width: 24px;
+            height: 24px;
+
+            right: 5px;
+
+            font-size: 12px;
         }
 
     }
@@ -309,7 +362,7 @@
 
 
     {{-- =====================================================
-         MENSAJE
+         MENSAJE DE ACTUALIZACIÓN
     ===================================================== --}}
 
     @if(session('mensaje'))
@@ -342,9 +395,18 @@
 
             <div class="peas-contenido">
 
-                <div class="peas-descripcion">
+                <div class="peas-codigo">
 
-                    {{ $pea['descripcion'] }}
+                    <span class="texto-peas">{{ $pea['descripcion'] }}</span>
+
+                    <button
+                        type="button"
+                        class="peas-copiar"
+                        onclick="copiarPeas(this)"
+                        title="Copiar"
+                    >
+                        📋
+                    </button>
 
                 </div>
 
@@ -358,3 +420,76 @@
 </div>
 
 @endsection
+
+
+@push('scripts')
+<script>
+
+    function copiarPeas(boton) {
+
+        const contenedor = boton.closest('.peas-codigo');
+
+        const elementoTexto = contenedor.querySelector('.texto-peas');
+
+        const texto = elementoTexto.textContent.trim();
+
+
+        navigator.clipboard.writeText(texto)
+
+            .then(function () {
+
+                boton.textContent = '✓';
+
+                boton.classList.add('peas-copiado');
+
+
+                setTimeout(function () {
+
+                    boton.textContent = '📋';
+
+                    boton.classList.remove('peas-copiado');
+
+                }, 1200);
+
+            })
+
+            .catch(function () {
+
+                const textarea = document.createElement('textarea');
+
+                textarea.value = texto;
+
+                textarea.style.position = 'fixed';
+
+                textarea.style.opacity = '0';
+
+                document.body.appendChild(textarea);
+
+                textarea.focus();
+
+                textarea.select();
+
+                document.execCommand('copy');
+
+                textarea.remove();
+
+
+                boton.textContent = '✓';
+
+                boton.classList.add('peas-copiado');
+
+
+                setTimeout(function () {
+
+                    boton.textContent = '📋';
+
+                    boton.classList.remove('peas-copiado');
+
+                }, 1200);
+
+            });
+
+    }
+
+</script>
+@endpush
