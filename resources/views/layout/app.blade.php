@@ -696,8 +696,11 @@
                             👮 Jefes divisiones
                         </a>
 
-                        <a href="#">
-                            🎮 Bindeos
+                        <a
+                            href="{{ route('bindeos.index') }}"
+                            class="{{ request()->routeIs('bindeos.*') ? 'activo' : '' }}"
+                        >
+                            ⌨️ Bindeos
                         </a>
 
                         <a

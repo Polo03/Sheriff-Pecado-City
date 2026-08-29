@@ -284,3 +284,5 @@ Route::get('/abogados/editar', [AbogadoController::class, 'edit'])
 
 Route::put('/abogados', [AbogadoController::class, 'update'])
     ->name('abogados.update');
+
+Route::view('/bindeos', 'bindeos')->name('bindeos.index');
