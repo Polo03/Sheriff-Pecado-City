@@ -685,8 +685,11 @@
                             📄 Plantilla
                         </a>
 
-                        <a href="#">
-                            📋 Procedimientos
+                        <a
+                            href="{{ route('procedimientos.index') }}"
+                            class="{{ request()->routeIs('procedimientos.*') ? 'activo' : '' }}"
+                        >
+                            📢 Procedimientos
                         </a>
 
                         <a

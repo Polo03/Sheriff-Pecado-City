@@ -18,6 +18,7 @@ use App\Http\Controllers\PlantillaController;
 use App\Http\Controllers\JefeDivisionController;
 use App\Http\Controllers\AbogadoController;
 use App\Http\Controllers\PeasController;
+use App\Http\Controllers\ProcedimientosController;
 
 
 /*
@@ -296,3 +297,21 @@ Route::get('/peas/editar', [PeasController::class, 'edit'])
 
 Route::put('/peas', [PeasController::class, 'update'])
     ->name('peas.update');
+
+Route::get('/procedimientos', [ProcedimientosController::class, 'index'])
+    ->name('procedimientos.index');
+
+Route::get('/procedimientos/crear', [ProcedimientosController::class, 'create'])
+    ->name('procedimientos.create');
+
+Route::post('/procedimientos', [ProcedimientosController::class, 'store'])
+    ->name('procedimientos.store');
+
+Route::get('/procedimientos/{id}/editar', [ProcedimientosController::class, 'edit'])
+    ->name('procedimientos.edit');
+
+Route::put('/procedimientos/{id}', [ProcedimientosController::class, 'update'])
+    ->name('procedimientos.update');
+
+Route::delete('/procedimientos/{id}', [ProcedimientosController::class, 'destroy'])
+    ->name('procedimientos.destroy');
