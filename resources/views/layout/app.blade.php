@@ -662,19 +662,61 @@
 
                 {{-- INFORMACION --}}
 
-                <a
-                    href="{{ route('menu.principal') }}"
-                >
+                <details>
 
-                    <span class="sidebar-icono">
-                        ℹ️
-                    </span>
+                    <summary>
 
-                    <span class="texto-menu">
-                        Información
-                    </span>
+                        <span class="sidebar-icono">
+                            📚
+                        </span>
 
-                </a>
+                        <span class="texto-menu">
+                            Información
+                        </span>
+
+                    </summary>
+
+                    <div class="submenu-lateral">
+
+                        <a href="#">
+                            📄 Plantilla
+                        </a>
+
+                        <a href="#">
+                            📋 Procedimientos
+                        </a>
+
+                        <a href="#">
+                            👮 Jefes divisiones
+                        </a>
+
+                        <a href="#">
+                            🎮 Bindeos
+                        </a>
+
+                        <a href="#">
+                            📜 Certificado de antecedentes
+                        </a>
+
+                        <a href="#">
+                            📝 Postulación divisiones
+                        </a>
+
+                        <a href="#">
+                            ⚖️ Abogados
+                        </a>
+
+                        <a href="#">
+                            📋 PEAS
+                        </a>
+
+                        <a href="#">
+                            👕 Uniformes
+                        </a>
+
+                    </div>
+
+                </details>
 
 
                 {{-- COMUNICACIONES --}}
