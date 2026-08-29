@@ -711,7 +711,10 @@
                             📝 Postulación divisiones
                         </a>
 
-                        <a href="#">
+                        <a
+                            href="{{ route('abogados.index') }}"
+                            class="{{ request()->routeIs('abogados.*') ? 'activo' : '' }}"
+                        >
                             ⚖️ Abogados
                         </a>
 

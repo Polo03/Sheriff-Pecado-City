@@ -16,6 +16,7 @@ use App\Http\Controllers\DrogasDniController;
 use App\Http\Controllers\DniRehenController;
 use App\Http\Controllers\PlantillaController;
 use App\Http\Controllers\JefeDivisionController;
+use App\Http\Controllers\AbogadoController;
 
 
 /*
@@ -274,3 +275,12 @@ Route::put('/jefes-divisiones/{division}', [JefeDivisionController::class, 'upda
 
 Route::get('/postulacion-divisiones', [PostulacionDivisionController::class, 'index'])
     ->name('postulacion-divisiones.index');
+
+Route::get('/abogados', [AbogadoController::class, 'index'])
+    ->name('abogados.index');
+
+Route::get('/abogados/editar', [AbogadoController::class, 'edit'])
+    ->name('abogados.edit');
+
+Route::put('/abogados', [AbogadoController::class, 'update'])
+    ->name('abogados.update');
